@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function TentangPage() {
   return (
     <div className="px-4 py-8 max-w-3xl mx-auto">

@@ -10,7 +10,7 @@ export default function MenuPage() {
   // Mengambil data menu dari Supabase
   useEffect(() => {
     async function ambilMenu() {
-      const { data, error } = await supabase.from("menu").select("*");
+      const { data } = await supabase.from("menu").select("*");
       if (data) setDaftarMenu(data);
       setLoading(false);
     }
@@ -20,13 +20,6 @@ export default function MenuPage() {
   // Fungsi menambahkan menu ke keranjang
   const tambahKeranjang = (menu) => {
     setKeranjang([...keranjang, menu]);
-  };
-
-  // Fungsi menghapus menu dari keranjang
-  const hapusKeranjang = (index) => {
-    const baru = [...keranjang];
-    baru.splice(index, 1);
-    setKeranjang(baru);
   };
 
   // Menghitung total harga

@@ -16,6 +16,12 @@ export default function AdminDashboard() {
   const [emoji, setEmoji] = useState("🍔");
   const [tambahLoading, setTambahLoading] = useState(false);
 
+  // Ambil data menu dari Supabase
+  const ambilMenu = async () => {
+    const { data } = await supabase.from("menu").select("*").order("id", { ascending: false });
+    if (data) setDaftarMenu(data);
+  };
+
   useEffect(() => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -29,12 +35,6 @@ export default function AdminDashboard() {
     };
     checkUser();
   }, [router]);
-
-  // Ambil data menu dari Supabase
-  const ambilMenu = async () => {
-    const { data } = await supabase.from("menu").select("*").order("id", { ascending: false });
-    if (data) setDaftarMenu(data);
-  };
 
   // Fungsi Tambah Menu
   const handleTambah = async (e) => {
