@@ -71,6 +71,254 @@ export async function deleteMenuItem(id: number) {
   if (error) throw error;
 }
 
+export const DEFAULT_MENU_ITEMS = [
+  // Healthy Food
+  {
+    nama: "Salad",
+    kategori: "Healthy Food",
+    harga: 22000,
+    deskripsi: "Aneka sayuran segar seperti kol ungu, selada, wortel, timun, jagung, tomat, dengan protein telur dan ayam, dipadukan dengan dressing pilihan.",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Salad Roll",
+    kategori: "Healthy Food",
+    harga: 22000,
+    deskripsi: "Aneka sayuran segar seperti kol ungu, selada, wortel, timun, jagung, tomat, dengan protein ayam, dibungkus dengan rice pepper dan dipadukan dengan dressing pilihan.",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+
+  // Roti Maryam
+  {
+    nama: "Roti Maryam + Karih Ayam",
+    kategori: "Roti Maryam",
+    harga: 28000,
+    deskripsi: "Roti maryam dipadukan dengan karih ayam dan acar timun.",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Roti Maryam Coklat Keju",
+    kategori: "Roti Maryam",
+    harga: 13000,
+    deskripsi: "Roti maryam dipadukan dengan toping coklat keju.",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Roti Maryam Keju",
+    kategori: "Roti Maryam",
+    harga: 12000,
+    deskripsi: "Roti maryam dipadukan dengan toping keju dan skm.",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Roti Maryam Manis",
+    kategori: "Roti Maryam",
+    harga: 10000,
+    deskripsi: "Roti maryam dipadukan dengan toping manis glaze coklat/tiramisu.",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+
+  // Camilan
+  {
+    nama: "Pisang Roll",
+    kategori: "Camilan",
+    harga: 12000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Pisang Nugget",
+    kategori: "Camilan",
+    harga: 12000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Tela-Tela",
+    kategori: "Camilan",
+    harga: 10000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Kentang Goreng",
+    kategori: "Camilan",
+    harga: 10000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+
+  // Es Teh
+  {
+    nama: "Es Teh Tawar",
+    kategori: "Es Teh",
+    harga: 4000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Teh Manis",
+    kategori: "Es Teh",
+    harga: 5000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Teh Leci",
+    kategori: "Es Teh",
+    harga: 8000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Teh Lemon",
+    kategori: "Es Teh",
+    harga: 8000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Teh Vanila",
+    kategori: "Es Teh",
+    harga: 8000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Teh Jeruk Nipis",
+    kategori: "Es Teh",
+    harga: 8000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+
+  // Es Susu
+  {
+    nama: "Es Susu Coklat",
+    kategori: "Es Susu",
+    harga: 13000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Susu Pisang",
+    kategori: "Es Susu",
+    harga: 13000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Susu Vanila",
+    kategori: "Es Susu",
+    harga: 13000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Susu Strawberry",
+    kategori: "Es Susu",
+    harga: 13000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Susu Coco Pandan",
+    kategori: "Es Susu",
+    harga: 12000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+  {
+    nama: "Es Susu Kopi",
+    kategori: "Es Susu",
+    harga: 10000,
+    deskripsi: "",
+    status: "tersedia" as const,
+    rekomendasi: false,
+    stok: null,
+    foto: null,
+  },
+];
+
+export async function seedDefaultMenu(): Promise<number> {
+  const supabase = createBrowserClient();
+  const { data: existing, error: fetchErr } = await supabase.from("menu").select("nama");
+  if (fetchErr) throw fetchErr;
+
+  const existingNames = new Set((existing || []).map((item) => item.nama.toLowerCase().trim()));
+  const toInsert = DEFAULT_MENU_ITEMS.filter((item) => !existingNames.has(item.nama.toLowerCase().trim()));
+
+  if (toInsert.length === 0) return 0;
+
+  const { error: insertErr } = await supabase.from("menu").insert(toInsert);
+  if (insertErr) throw insertErr;
+
+  return toInsert.length;
+}
+
 /* ============ ORDERS ============ */
 export async function getOrders(): Promise<Order[]> {
   const supabase = createBrowserClient();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getMenu, saveMenuItem, deleteMenuItem } from "@/lib/queries";
+import { getMenu, saveMenuItem, deleteMenuItem, seedDefaultMenu } from "@/lib/queries";
 import { uploadImage } from "@/lib/storage";
 import type { MenuItem } from "@/lib/types";
 
@@ -48,6 +48,7 @@ export default function AdminMenuPage() {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
   const [saving, setSaving] = useState(false);
+  const [seeding, setSeeding] = useState(false);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -146,6 +147,24 @@ export default function AdminMenuPage() {
     }
   }
 
+  async function handleSeedDefault() {
+    if (!confirm("Masukkan seluruh menu bawaan (Healthy Food, Roti Maryam, Camilan, Minuman) ke database?")) return;
+    setSeeding(true);
+    try {
+      const count = await seedDefaultMenu();
+      if (count > 0) {
+        alert(`Berhasil menambahkan ${count} menu baru!`);
+      } else {
+        alert("Semua menu default sudah ada di database.");
+      }
+      load();
+    } catch (err) {
+      alert("Gagal menambahkan menu default: " + (err as Error).message);
+    } finally {
+      setSeeding(false);
+    }
+  }
+
   return (
     <div>
       <div className="flex justify-between items-start mb-6">
@@ -153,12 +172,21 @@ export default function AdminMenuPage() {
           <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">Kelola Menu</h1>
           <p className="text-sm text-[#6E5A47]">Tambah, ubah, atau tandai status menu</p>
         </div>
-        <button
-          onClick={openAdd}
-          className="bg-[#C1652F] text-white font-semibold text-sm rounded-lg px-4 py-2"
-        >
-          + Tambah Menu
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleSeedDefault}
+            disabled={seeding}
+            className="bg-[#2F5233] text-white font-semibold text-sm rounded-lg px-4 py-2 disabled:opacity-50"
+          >
+            {seeding ? "Memproses..." : "📥 Masukkan Menu Default"}
+          </button>
+          <button
+            onClick={openAdd}
+            className="bg-[#C1652F] text-white font-semibold text-sm rounded-lg px-4 py-2"
+          >
+            + Tambah Menu
+          </button>
+        </div>
       </div>
 
       {loading ? (

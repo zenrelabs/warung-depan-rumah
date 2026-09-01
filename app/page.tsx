@@ -1,43 +1,57 @@
-import Link from "next/link";
-export default function Home() {
-  return (
-    <div className="px-4 py-8 flex flex-col items-center">
+"use client";
 
-      {/* Judul Utama (Hero) */}
-      <div className="text-center mb-10 mt-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-green-800 mb-3">
-          Warung Depan Rumah
-        </h1>
-        <p className="text-lg text-gray-700 mb-6">
-          Kuliner Rumahan, Rasa Profesional
-        </p>
-        <Link href="/menu" className="bg-green-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-800 transition shadow-md">
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { getSettings } from "@/lib/queries";
+import type { Settings } from "@/lib/types";
+
+export default function HomePage() {
+  const [settings, setSettings] = useState<Settings>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getSettings()
+      .then(setSettings)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const isOpen = settings.StoreOpen !== "false";
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+      <h1 className="text-4xl md:text-5xl font-bold text-[#1F3A23] mb-3">
+        {settings.StoreName || "Warung Depan Rumah"}
+      </h1>
+      <p className="text-base md:text-lg text-[#6E5A47] mb-8">
+        Kuliner Rumahan, Rasa Profesional
+      </p>
+
+      {!loading && (
+        <div
+          className={
+            "inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 " +
+            (isOpen ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600")
+          }
+        >
+          <div>● {isOpen ? "Sedang Buka" : "Sedang Tutup"}</div>
+        </div>
+      )}
+
+      <div>
+        <Link
+          href="/menu"
+          className="inline-block bg-[#C1652F] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[#a95423] transition"
+        >
           Lihat Menu
         </Link>
       </div>
 
-      {/* Card Info Toko */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md border border-green-100">
-        
-        {/* Status Buka / Tutup */}
-        <div className="flex items-center justify-center space-x-2 mb-4">
-          <span className="flex h-3 w-3 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-          </span>
-          <span className="font-bold text-green-700 text-lg">Buka Sekarang</span>
+      {!loading && settings.StoreAddress && (
+        <div className="mt-10 text-sm text-[#6E5A47] space-y-1">
+          <p>{settings.StoreAddress}</p>
+          {settings.StorePhone && <p>{settings.StorePhone}</p>}
         </div>
-
-        {/* Detail Informasi */}
-        <div className="text-center space-y-2 text-gray-600 text-sm">
-          <p>⏰ Jam Buka: 10:00 - 22:00 WIB</p>
-          <p>📍 Jl. Brigjen H. Hasan Basri no. 18, Desa Batuah</p>
-          <p>📱 WhatsApp: +62 823 1527 1827</p>
-          <p>📸 Instagram: @depan.rumah18</p>
-        </div>
-
-      </div>
-
+      )}
     </div>
   );
 }
