@@ -119,23 +119,23 @@ export default function LaporanPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-8 text-[#3B2A1E]">
-      <h1 className="text-2xl font-bold text-[#2F5233]">Laporan</h1>
+      <h1 className="font-display text-2xl font-bold text-[#2F5233]">Laporan</h1>
 
       {/* SEMUA ROLE: TOTAL OMSET & TRANSAKSI */}
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4">
           <p className="text-xs text-[#6E5A47] mb-1">Total Omset (semua waktu)</p>
-          <p className="text-2xl font-bold text-[#2F5233]">{formatRupiah(totalOmset)}</p>
+          <p className="text-2xl font-bold font-mono text-[#2F5233]">{formatRupiah(totalOmset)}</p>
         </div>
         <div className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4">
           <p className="text-xs text-[#6E5A47] mb-1">Jumlah Transaksi</p>
-          <p className="text-2xl font-bold text-[#2F5233]">{jumlahTransaksi}</p>
+          <p className="text-2xl font-bold font-mono text-[#2F5233]">{jumlahTransaksi}</p>
         </div>
       </section>
 
       {/* SEMUA ROLE: MENU TERLARIS */}
       <section className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6 space-y-3">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Menu Terlaris (Top 5)</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Menu Terlaris (Top 5)</h2>
         {menuTerlaris.length === 0 ? (
           <p className="text-sm text-[#6E5A47]">Belum ada data penjualan.</p>
         ) : (
@@ -152,22 +152,22 @@ export default function LaporanPage() {
 
       {/* KHUSUS SUPER: LABA BULAN INI */}
       <section className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6 space-y-2">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Laba Bulan Ini</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Laba Bulan Ini</h2>
         {!isSuper ? (
           <p className="text-sm text-[#6E5A47]">🔒 khusus Super Admin</p>
         ) : (
           <>
             <div className="flex justify-between text-sm">
               <span>Omset bulan ini</span>
-              <span>{formatRupiah(omsetBulanIni)}</span>
+              <span className="font-mono">{formatRupiah(omsetBulanIni)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span>Pengeluaran bulan ini (termasuk gaji)</span>
-              <span>{formatRupiah(totalExpensesBulanIni)}</span>
+              <span className="font-mono">{formatRupiah(totalExpensesBulanIni)}</span>
             </div>
             <div className="flex justify-between font-bold text-[#2F5233] pt-2 border-t border-[#E4D9C2]">
               <span>Laba bersih</span>
-              <span>{formatRupiah(labaBulanIni)}</span>
+              <span className="font-mono">{formatRupiah(labaBulanIni)}</span>
             </div>
           </>
         )}
@@ -176,7 +176,7 @@ export default function LaporanPage() {
       {/* KHUSUS SUPER: DAFTAR KEUANGAN BULAN INI */}
       <section className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#2F5233]">Keuangan Bulan Ini</h2>
+          <h2 className="font-display text-lg font-semibold text-[#2F5233]">Keuangan Bulan Ini</h2>
           {isSuper && (
             <button
               onClick={() => setShowAddExpense((v) => !v)}
@@ -233,7 +233,7 @@ export default function LaporanPage() {
                   {paidOrdersThisMonth.map((o) => (
                     <li key={o.id} className="flex justify-between py-1.5 text-sm">
                       <span>{o.kode_pesanan} — {o.customer_name}</span>
-                      <span className="text-[#3E7A46]">+{formatRupiah(o.total)}</span>
+                      <span className="text-[#3E7A46] font-mono">+{formatRupiah(o.total)}</span>
                     </li>
                   ))}
                 </ul>
@@ -251,7 +251,7 @@ export default function LaporanPage() {
                   {expensesThisMonth.map((e) => (
                     <li key={e.id} className="flex justify-between py-1.5 text-sm">
                       <span>{e.kategori}{e.keterangan ? ` — ${e.keterangan}` : ""}</span>
-                      <span className="text-[#B23A34]">-{formatRupiah(e.nominal)}</span>
+                      <span className="text-[#B23A34] font-mono">-{formatRupiah(e.nominal)}</span>
                     </li>
                   ))}
                 </ul>
