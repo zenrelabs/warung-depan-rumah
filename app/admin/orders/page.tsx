@@ -86,7 +86,7 @@ export default function AdminOrdersPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">Riwayat Pesanan</h1>
+        <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">Riwayat Pesanan</h1>
         <p className="text-sm text-[#6E5A47]">Semua transaksi yang tercatat</p>
       </div>
 
@@ -164,7 +164,7 @@ export default function AdminOrdersPage() {
           <div className="min-h-full flex items-start justify-center p-5">
             <div className="bg-white rounded-2xl p-6 w-full max-w-md my-10">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-[#1F3A23]">Struk Pesanan</h3>
+                <h3 className="font-display text-lg font-semibold text-[#1F3A23]">Struk Pesanan</h3>
                 <button onClick={() => setDetailOrder(null)} className="text-[#6E5A47]">
                   ✕
                 </button>
