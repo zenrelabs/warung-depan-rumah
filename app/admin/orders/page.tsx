@@ -19,9 +19,9 @@ function fmtDate(d: string) {
 }
 
 function badgeClass(status: Order["status"]) {
-  if (status === "Diproses") return "bg-[#DCE7F1] text-[#2A5C8A]";
-  if (status === "Selesai") return "bg-[#DDEBDC] text-[#3E7A46]";
-  return "bg-[#F5DEDC] text-[#B23A34]";
+  if (status === "Diproses") return "bg-[var(--blue-tint)] text-[var(--blue)]";
+  if (status === "Selesai") return "bg-[var(--green-tint)] text-[var(--green-ok)]";
+  return "bg-[var(--red-tint)] text-[var(--red)]";
 }
 
 export default function AdminOrdersPage() {
@@ -86,19 +86,19 @@ export default function AdminOrdersPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">Riwayat Pesanan</h1>
-        <p className="text-sm text-[#6E5A47]">Semua transaksi yang tercatat</p>
+        <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">Riwayat Pesanan</h1>
+        <p className="text-sm text-[var(--walnut-soft)]">Semua transaksi yang tercatat</p>
       </div>
 
       {loading ? (
-        <p className="text-sm text-[#6E5A47]">Memuat...</p>
+        <p className="text-sm text-[var(--walnut-soft)]">Memuat...</p>
       ) : orders.length === 0 ? (
-        <p className="text-sm text-[#6E5A47]">Belum ada pesanan.</p>
+        <p className="text-sm text-[var(--walnut-soft)]">Belum ada pesanan.</p>
       ) : (
         <div className="bg-white rounded-2xl shadow overflow-x-auto">
           <table className="w-full text-sm min-w-[720px]">
             <thead>
-              <tr className="text-left text-xs uppercase text-[#6E5A47] border-b border-[#E4D9C2]">
+              <tr className="text-left text-xs uppercase text-[var(--walnut-soft)] border-b border-[var(--line)]">
                 <th className="p-3 font-mono">ID</th>
                 <th className="p-3">Pelanggan</th>
                 <th className="p-3">Item</th>
@@ -109,9 +109,9 @@ export default function AdminOrdersPage() {
             </thead>
             <tbody>
               {orders.map((o) => (
-                <tr key={o.id} className="border-b border-[#E4D9C2] last:border-0">
+                <tr key={o.id} className="border-b border-[var(--line)] last:border-0">
                   <td
-                    className="p-3 font-mono text-[#C1652F] cursor-pointer"
+                    className="p-3 font-mono text-[var(--rust)] cursor-pointer"
                     onClick={() => openMarkPaid(o)}
                   >
                     {o.kode_pesanan}
@@ -124,13 +124,13 @@ export default function AdminOrdersPage() {
                   <td className="p-3">
                     {o.payment_method}
                     {o.paid ? (
-                      <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#DDEBDC] text-[#3E7A46]">
+                      <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--green-tint)] text-[var(--green-ok)]">
                         Lunas
                       </span>
                     ) : (
                       <button
                         onClick={() => openMarkPaid(o)}
-                        className="ml-2 text-xs font-semibold border border-[#E4D9C2] rounded-full px-2.5 py-0.5"
+                        className="ml-2 text-xs font-semibold border border-[var(--line)] rounded-full px-2.5 py-0.5"
                       >
                         Tandai Lunas
                       </button>
@@ -164,34 +164,34 @@ export default function AdminOrdersPage() {
           <div className="min-h-full flex items-start justify-center p-5">
             <div className="bg-white rounded-2xl p-6 w-full max-w-md my-10">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-display text-lg font-semibold text-[#1F3A23]">Struk Pesanan</h3>
-                <button onClick={() => setDetailOrder(null)} className="text-[#6E5A47]">
+                <h3 className="font-display text-lg font-semibold text-[var(--forest-dark)]">Struk Pesanan</h3>
+                <button onClick={() => setDetailOrder(null)} className="text-[var(--walnut-soft)]">
                   ✕
                 </button>
               </div>
 
               <div className="text-sm space-y-1 mb-3">
                 <div className="flex justify-between">
-                  <span className="text-[#6E5A47]">No. Pesanan</span>
+                  <span className="text-[var(--walnut-soft)]">No. Pesanan</span>
                   <span className="font-mono">{detailOrder.kode_pesanan}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6E5A47]">Tanggal</span>
+                  <span className="text-[var(--walnut-soft)]">Tanggal</span>
                   <span>{fmtDate(detailOrder.created_at)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6E5A47]">Pelanggan</span>
+                  <span className="text-[var(--walnut-soft)]">Pelanggan</span>
                   <span>{detailOrder.customer_name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#6E5A47]">Pembayaran</span>
+                  <span className="text-[var(--walnut-soft)]">Pembayaran</span>
                   <span>
                     {detailOrder.payment_method} {detailOrder.paid ? "(Lunas)" : "(Belum Lunas)"}
                   </span>
                 </div>
               </div>
 
-              <div className="border-t border-dashed border-[#E4D9C2] py-3 mb-3">
+              <div className="border-t border-dashed border-[var(--line)] py-3 mb-3">
                 {detailOrder.items.map((it, i) => (
                   <div key={i} className="flex justify-between text-sm mb-1">
                     <span>
@@ -204,12 +204,12 @@ export default function AdminOrdersPage() {
 
               <div className="flex justify-between font-bold text-sm mb-4">
                 <span>Total</span>
-                <span className="font-mono text-[#1F3A23]">{rupiah(detailOrder.total)}</span>
+                <span className="font-mono text-[var(--forest-dark)]">{rupiah(detailOrder.total)}</span>
               </div>
 
               {!detailOrder.paid && (
-                <div className="border-t border-[#E4D9C2] pt-4">
-                  <label className="block text-xs font-bold text-[#6E5A47] mb-2">
+                <div className="border-t border-[var(--line)] pt-4">
+                  <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-2">
                     Lampirkan bukti bayar (opsional)
                   </label>
                   <input type="file" accept="image/*" onChange={onProofChange} className="text-xs mb-2" />
@@ -220,7 +220,7 @@ export default function AdminOrdersPage() {
                   <button
                     onClick={handleMarkPaid}
                     disabled={markingPaid}
-                    className="w-full bg-[#2F5233] text-white font-semibold text-sm rounded-lg py-2.5 disabled:opacity-50"
+                    className="w-full bg-[var(--forest)] text-white font-semibold text-sm rounded-lg py-2.5 disabled:opacity-50"
                   >
                     {markingPaid ? "Memproses..." : "Tandai Lunas"}
                   </button>

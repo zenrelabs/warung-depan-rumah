@@ -14,11 +14,11 @@ import { createClient } from "@/lib/supabase/client";
 import type { Settings, AdminProfile, Salary } from "@/lib/types";
 
 const THEME_PRESETS: { label: string; value: string; swatch: string }[] = [
-  { label: "Hijau", value: "hijau", swatch: "#2F5233" },
-  { label: "Coklat", value: "coklat", swatch: "#6E5A47" },
-  { label: "Biru", value: "biru", swatch: "#2A5C8A" },
-  { label: "Merah", value: "merah", swatch: "#B23A34" },
-  { label: "Ungu", value: "ungu", swatch: "#6A4E8C" },
+  { label: "Hijau", value: "hijau", swatch: "var(--forest)" },
+  { label: "Coklat", value: "coklat", swatch: "var(--walnut-soft)" },
+  { label: "Biru", value: "biru", swatch: "var(--blue)" },
+  { label: "Merah", value: "merah", swatch: "var(--red)" },
+  { label: "Ungu", value: "ungu", swatch: "var(--purple)" },
 ];
 
 export default function PengaturanPage() {
@@ -171,27 +171,27 @@ export default function PengaturanPage() {
   }
 
   if (loading) {
-    return <div className="p-6 text-[#3B2A1E]">Memuat pengaturan...</div>;
+    return <div className="p-6 text-[var(--walnut)]">Memuat pengaturan...</div>;
   }
 
   const isSuper = profile?.role === "super";
 
   return (
-    <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-8 text-[#3B2A1E]">
-      <h1 className="font-display text-2xl font-bold text-[#2F5233]">Pengaturan</h1>
+    <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-8 text-[var(--walnut)]">
+      <h1 className="font-display text-2xl font-bold text-[var(--forest)]">Pengaturan</h1>
 
       {message && (
-        <div className="rounded-lg border border-[#DCE3D0] bg-[#F6EFE2] px-4 py-3 text-sm">
+        <div className="rounded-lg border border-[var(--forest-tint)] bg-[var(--cream)] px-4 py-3 text-sm">
           {message}
         </div>
       )}
 
       {/* IDENTITAS TOKO */}
-      <section className="space-y-4 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Identitas Toko</h2>
+      <section className="space-y-4 rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6">
+        <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Identitas Toko</h2>
 
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-[#EFE4CD] overflow-hidden flex items-center justify-center border border-[#E4D9C2]">
+          <div className="w-20 h-20 rounded-full bg-[var(--cream-alt)] overflow-hidden flex items-center justify-center border border-[var(--line)]">
             {logoPreview || logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -200,10 +200,10 @@ export default function PengaturanPage() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-xs text-[#6E5A47]">Belum ada logo</span>
+              <span className="text-xs text-[var(--walnut-soft)]">Belum ada logo</span>
             )}
           </div>
-          <label className="cursor-pointer text-sm font-medium text-[#C1652F] hover:underline">
+          <label className="cursor-pointer text-sm font-medium text-[var(--rust)] hover:underline">
             {uploadingLogo ? "Mengupload..." : "Ganti logo"}
             <input
               type="file"
@@ -222,7 +222,7 @@ export default function PengaturanPage() {
               type="text"
               value={namaToko}
               onChange={(e) => setNamaToko(e.target.value)}
-              className="w-full rounded-lg border border-[#E4D9C2] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -231,7 +231,7 @@ export default function PengaturanPage() {
               type="text"
               value={alamat}
               onChange={(e) => setAlamat(e.target.value)}
-              className="w-full rounded-lg border border-[#E4D9C2] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -241,7 +241,7 @@ export default function PengaturanPage() {
               value={wa}
               onChange={(e) => setWa(e.target.value)}
               placeholder="cth: 6282315271827"
-              className="w-full rounded-lg border border-[#E4D9C2] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -251,7 +251,7 @@ export default function PengaturanPage() {
               value={ig}
               onChange={(e) => setIg(e.target.value)}
               placeholder="cth: depan.rumah18"
-              className="w-full rounded-lg border border-[#E4D9C2] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
             />
           </div>
         </div>
@@ -259,15 +259,15 @@ export default function PengaturanPage() {
         <button
           onClick={handleSaveIdentitas}
           disabled={saving}
-          className="rounded-lg bg-[#2F5233] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F3A23] disabled:opacity-60"
+          className="rounded-lg bg-[var(--forest)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--forest-dark)] disabled:opacity-60"
         >
           {saving ? "Menyimpan..." : "Simpan Identitas"}
         </button>
       </section>
 
       {/* WARNA TEMA */}
-      <section className="space-y-3 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Warna Tema</h2>
+      <section className="space-y-3 rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6">
+        <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Warna Tema</h2>
         <div className="flex flex-wrap gap-3">
           {THEME_PRESETS.map((preset) => (
             <button
@@ -275,8 +275,8 @@ export default function PengaturanPage() {
               onClick={() => handleThemeChange(preset.value)}
               className={`flex items-center gap-2 rounded-full border px-3 py-2 text-sm ${
                 themeColor === preset.value
-                  ? "border-[#2F5233] bg-[#DCE3D0]"
-                  : "border-[#E4D9C2] bg-white"
+                  ? "border-[var(--forest)] bg-[var(--forest-tint)]"
+                  : "border-[var(--line)] bg-white"
               }`}
             >
               <span
@@ -290,20 +290,20 @@ export default function PengaturanPage() {
       </section>
 
       {/* TOGGLES */}
-      <section className="space-y-4 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Status Operasional</h2>
+      <section className="space-y-4 rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6">
+        <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Status Operasional</h2>
 
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium">Warung sedang buka</p>
-            <p className="text-xs text-[#6E5A47]">
+            <p className="text-xs text-[var(--walnut-soft)]">
               Kalau dimatikan, customer tidak bisa memesan.
             </p>
           </div>
           <button
             onClick={handleToggleStoreOpen}
             className={`w-12 h-7 rounded-full transition-colors ${
-              storeOpen ? "bg-[#3E7A46]" : "bg-[#E4D9C2]"
+              storeOpen ? "bg-[var(--green-ok)]" : "bg-[var(--line)]"
             }`}
           >
             <span
@@ -317,14 +317,14 @@ export default function PengaturanPage() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium">Izinkan pesan di luar jam operasional</p>
-            <p className="text-xs text-[#6E5A47]">
+            <p className="text-xs text-[var(--walnut-soft)]">
               Kalau aktif, customer tetap bisa checkout walau warung ditandai tutup.
             </p>
           </div>
           <button
             onClick={handleToggleAllowOutside}
             className={`w-12 h-7 rounded-full transition-colors ${
-              allowOutside ? "bg-[#3E7A46]" : "bg-[#E4D9C2]"
+              allowOutside ? "bg-[var(--green-ok)]" : "bg-[var(--line)]"
             }`}
           >
             <span
@@ -337,21 +337,21 @@ export default function PengaturanPage() {
       </section>
 
       {/* PENGGAJIAN - KHUSUS SUPER */}
-      <section className="space-y-4 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Penggajian</h2>
+      <section className="space-y-4 rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6">
+        <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Penggajian</h2>
         {!isSuper ? (
-          <p className="text-sm text-[#6E5A47]">🔒 khusus Super Admin</p>
+          <p className="text-sm text-[var(--walnut-soft)]">🔒 khusus Super Admin</p>
         ) : salariesLoading ? (
-          <p className="text-sm text-[#6E5A47]">Memuat data gaji...</p>
+          <p className="text-sm text-[var(--walnut-soft)]">Memuat data gaji...</p>
         ) : salaries.length === 0 ? (
-          <p className="text-sm text-[#6E5A47]">Belum ada data gaji.</p>
+          <p className="text-sm text-[var(--walnut-soft)]">Belum ada data gaji.</p>
         ) : (
-          <div className="divide-y divide-[#E4D9C2]">
+          <div className="divide-y divide-[var(--line)]">
             {salaries.map((s) => (
               <div key={s.id} className="flex items-center justify-between py-3">
                 <div>
                   <p className="text-sm font-medium">{s.nama}</p>
-                  <p className="text-xs text-[#6E5A47] font-mono">
+                  <p className="text-xs text-[var(--walnut-soft)] font-mono">
                     Rp {s.nominal.toLocaleString("id-ID")}
                     {s.sudah_dibayar && s.tanggal_bayar
                       ? ` · dibayar ${new Date(s.tanggal_bayar).toLocaleDateString("id-ID")}`
@@ -359,12 +359,12 @@ export default function PengaturanPage() {
                   </p>
                 </div>
                 {s.sudah_dibayar ? (
-                  <span className="text-xs font-medium text-[#3E7A46]">✓ Sudah dibayar</span>
+                  <span className="text-xs font-medium text-[var(--green-ok)]">✓ Sudah dibayar</span>
                 ) : (
                   <button
                     onClick={() => handlePaySalary(s)}
                     disabled={payingId === s.id}
-                    className="rounded-lg bg-[#C1652F] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#9C4E22] disabled:opacity-60"
+                    className="rounded-lg bg-[var(--rust)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--rust-dark)] disabled:opacity-60"
                   >
                     {payingId === s.id ? "Memproses..." : "Tandai Dibayar"}
                   </button>
@@ -379,7 +379,7 @@ export default function PengaturanPage() {
       <div className="pt-2">
         <button
           onClick={handleLogout}
-          className="w-full rounded-lg border border-[#B23A34] px-4 py-2 text-sm font-medium text-[#B23A34] hover:bg-[#F5DEDC]"
+          className="w-full rounded-lg border border-[var(--red)] px-4 py-2 text-sm font-medium text-[var(--red)] hover:bg-[var(--red-tint)]"
         >
           Logout
         </button>

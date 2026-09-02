@@ -19,9 +19,9 @@ function fmtDate(d: string) {
 }
 
 function badgeClass(status: Order["status"]) {
-  if (status === "Diproses") return "bg-[#DCE7F1] text-[#2A5C8A]";
-  if (status === "Selesai") return "bg-[#DDEBDC] text-[#3E7A46]";
-  return "bg-[#F5DEDC] text-[#B23A34]";
+  if (status === "Diproses") return "bg-[var(--blue-tint)] text-[var(--blue)]";
+  if (status === "Selesai") return "bg-[var(--green-tint)] text-[var(--green-ok)]";
+  return "bg-[var(--red-tint)] text-[var(--red)]";
 }
 
 export default function MyOrdersPage() {
@@ -41,13 +41,13 @@ export default function MyOrdersPage() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
-      <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">Pesanan Saya</h1>
-      <p className="text-sm text-[#6E5A47] mb-6">Riwayat pesanan di perangkat ini</p>
+      <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">Pesanan Saya</h1>
+      <p className="text-sm text-[var(--walnut-soft)] mb-6">Riwayat pesanan di perangkat ini</p>
 
       {loading ? (
-        <p className="text-sm text-[#6E5A47]">Memuat...</p>
+        <p className="text-sm text-[var(--walnut-soft)]">Memuat...</p>
       ) : orders.length === 0 ? (
-        <div className="text-center py-16 text-[#6E5A47]">
+        <div className="text-center py-16 text-[var(--walnut-soft)]">
           <div className="text-3xl mb-2">🧾</div>
           <p className="text-sm">Belum ada riwayat pesanan.</p>
         </div>
@@ -60,10 +60,10 @@ export default function MyOrdersPage() {
                 {o.status}
               </span>
             </div>
-            <div className="text-xs text-[#6E5A47] mb-1">
+            <div className="text-xs text-[var(--walnut-soft)] mb-1">
               {o.items.map((i) => `${i.name} ×${i.qty}`).join(", ")}
             </div>
-            <div className="text-xs text-[#6E5A47]">
+            <div className="text-xs text-[var(--walnut-soft)]">
               {rupiah(o.total)} · {fmtDate(o.created_at)}
             </div>
           </div>

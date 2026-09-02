@@ -56,7 +56,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F6EFE2] text-[#6E5A47]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--cream)] text-[var(--walnut-soft)]">
         Memuat...
       </div>
     );
@@ -66,21 +66,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const isSuper = profile.role === "super";
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#F6EFE2]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[var(--cream)]">
       {/* SIDEBAR - DESKTOP */}
-      <aside className="hidden md:flex w-60 flex-shrink-0 bg-[#FFFDF8] border-r border-[#E4D9C2] p-5 flex-col">
-        <div className="mb-5 pb-5 border-b border-[#E4D9C2]">
-          <div className="font-display font-semibold text-base text-[#1F3A23] leading-tight">
+      <aside className="hidden md:flex w-60 flex-shrink-0 bg-[var(--white)] border-r border-[var(--line)] p-5 flex-col">
+        <div className="mb-5 pb-5 border-b border-[var(--line)]">
+          <div className="font-display font-semibold text-base text-[var(--forest-dark)] leading-tight">
             Warung Depan Rumah
           </div>
-          <div className="text-[11px] tracking-wide uppercase text-[#C1652F] font-bold">
+          <div className="text-[11px] tracking-wide uppercase text-[var(--rust)] font-bold">
             E-Kasir Admin
           </div>
         </div>
 
         <span
           className={`text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full w-fit mb-2 ${
-            storeOpen ? "bg-[#DDEBDC] text-[#3E7A46]" : "bg-[#F5DEDC] text-[#B23A34]"
+            storeOpen ? "bg-[var(--green-tint)] text-[var(--green-ok)]" : "bg-[var(--red-tint)] text-[var(--red)]"
           }`}
         >
           {storeOpen ? "● Buka" : "● Tutup"}
@@ -88,7 +88,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <span
           className={`text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full w-fit mb-4 ${
-            isSuper ? "bg-[#E6DEEF] text-[#6A4E8C]" : "bg-[#DCE7F1] text-[#2A5C8A]"
+            isSuper ? "bg-[var(--purple-tint)] text-[var(--purple)]" : "bg-[var(--blue-tint)] text-[var(--blue)]"
           }`}
         >
           {isSuper ? "Super Admin" : "Admin"}
@@ -104,8 +104,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={item.href}
                 className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold ${
                   active
-                    ? "bg-[#2F5233] text-white"
-                    : "text-[#6E5A47] hover:bg-[#EFE4CD]"
+                    ? "bg-[var(--forest)] text-white"
+                    : "text-[var(--walnut-soft)] hover:bg-[var(--cream-alt)]"
                 }`}
               >
                 <span className="w-5 text-center">{item.icon}</span>
@@ -113,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {showBadge && (
                   <span
                     className={`text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 ${
-                      active ? "bg-white/30 text-white" : "bg-[#C1652F] text-white"
+                      active ? "bg-white/30 text-white" : "bg-[var(--rust)] text-white"
                     }`}
                   >
                     {pendingOrdersCount}
@@ -124,14 +124,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
 
-        <div className="border-t border-[#E4D9C2] pt-3 mt-2">
-          <p className="text-xs text-[#6E5A47] mb-2">
+        <div className="border-t border-[var(--line)] pt-3 mt-2">
+          <p className="text-xs text-[var(--walnut-soft)] mb-2">
             Masuk sebagai <br />
-            <b className="text-[#3B2A1E]">{profile.nama}</b>
+            <b className="text-[var(--walnut)]">{profile.nama}</b>
           </p>
           <button
             onClick={handleLogout}
-            className="text-left text-sm font-semibold text-[#B23A34] px-3 py-2 rounded-lg hover:bg-[#F5DEDC] w-full"
+            className="text-left text-sm font-semibold text-[var(--red)] px-3 py-2 rounded-lg hover:bg-[var(--red-tint)] w-full"
           >
             Logout
           </button>
@@ -142,7 +142,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <main className="flex-1 min-w-0 pb-20 md:pb-0 overflow-y-auto">{children}</main>
 
       {/* BOTTOM NAV - MOBILE */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 bg-[#FFFDF8] border-t border-[#E4D9C2] flex justify-around py-2 px-1 z-30">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 bg-[var(--white)] border-t border-[var(--line)] flex justify-around py-2 px-1 z-30">
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.href;
           const showBadge = item.href === "/admin/orders" && pendingOrdersCount > 0;
@@ -151,13 +151,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold px-2 py-1 rounded-lg ${
-                active ? "bg-[#DCE3D0] text-[#1F3A23]" : "text-[#6E5A47]"
+                active ? "bg-[var(--forest-tint)] text-[var(--forest-dark)]" : "text-[var(--walnut-soft)]"
               }`}
             >
               <span className="relative">
                 <span className="text-base leading-none">{item.icon}</span>
                 {showBadge && (
-                  <span className="absolute -top-1.5 -right-2.5 bg-[#C1652F] text-white text-[9px] font-bold rounded-full min-w-[15px] h-[15px] flex items-center justify-center px-1 leading-none">
+                  <span className="absolute -top-1.5 -right-2.5 bg-[var(--rust)] text-white text-[9px] font-bold rounded-full min-w-[15px] h-[15px] flex items-center justify-center px-1 leading-none">
                     {pendingOrdersCount}
                   </span>
                 )}

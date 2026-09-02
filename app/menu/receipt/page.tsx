@@ -22,12 +22,12 @@ function fmtDate(d: string) {
 function statusStyle(status: string) {
   switch (status) {
     case "Selesai":
-      return "bg-[#DDEBDC] text-[#3E7A46]";
+      return "bg-[var(--green-tint)] text-[var(--green-ok)]";
     case "Dibatalkan":
-      return "bg-[#F5DEDC] text-[#B23A34]";
+      return "bg-[var(--red-tint)] text-[var(--red)]";
     case "Diproses":
     default:
-      return "bg-[#DCE7F1] text-[#2A5C8A]";
+      return "bg-[var(--blue-tint)] text-[var(--blue)]";
   }
 }
 
@@ -51,13 +51,13 @@ function ReceiptContent() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p className="text-center text-sm text-[#6E5A47] py-16">Memuat...</p>;
+  if (loading) return <p className="text-center text-sm text-[var(--walnut-soft)] py-16">Memuat...</p>;
 
   if (!order) {
     return (
       <div className="max-w-md mx-auto px-4 py-16 text-center">
-        <p className="text-sm text-[#6E5A47] mb-4">Pesanan tidak ditemukan.</p>
-        <Link href="/menu" className="text-[#C1652F] font-semibold text-sm">
+        <p className="text-sm text-[var(--walnut-soft)] mb-4">Pesanan tidak ditemukan.</p>
+        <Link href="/menu" className="text-[var(--rust)] font-semibold text-sm">
           ← Kembali ke menu
         </Link>
       </div>
@@ -97,22 +97,22 @@ function ReceiptContent() {
       <div className="no-print mb-4">
         <div className="bg-white rounded-t-2xl shadow-lg p-5 text-sm">
           <div className="flex justify-between mb-1">
-            <span className="text-[#6E5A47]">No. Pesanan</span>
+            <span className="text-[var(--walnut-soft)]">No. Pesanan</span>
             <span className="font-mono font-bold">{order.kode_pesanan}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-[#6E5A47]">Tanggal</span>
+            <span className="text-[var(--walnut-soft)]">Tanggal</span>
             <span>{fmtDate(order.created_at)}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-[#6E5A47]">Pelanggan</span>
+            <span className="text-[var(--walnut-soft)]">Pelanggan</span>
             <span>{order.customer_name}</span>
           </div>
           <div className="flex justify-between mb-1">
-            <span className="text-[#6E5A47]">Pembayaran</span>
+            <span className="text-[var(--walnut-soft)]">Pembayaran</span>
             <span>{order.payment_method}</span>
           </div>
-          <div className="border-t border-dashed border-[#E4D9C2] my-3" />
+          <div className="border-t border-dashed border-[var(--line)] my-3" />
           {order.items.map((it, i) => (
             <div key={i} className="flex justify-between mb-1">
               <span>
@@ -121,17 +121,17 @@ function ReceiptContent() {
               <span className="font-mono">{rupiah(it.price * it.qty)}</span>
             </div>
           ))}
-          <div className="border-t border-dashed border-[#E4D9C2] my-3" />
+          <div className="border-t border-dashed border-[var(--line)] my-3" />
           <div className="flex justify-between font-display font-bold text-base">
             <span>Total</span>
-            <span className="font-mono text-[#C1652F]">{rupiah(order.total)}</span>
+            <span className="font-mono text-[var(--rust)]">{rupiah(order.total)}</span>
           </div>
         </div>
         <div
           className="h-3 -mt-px"
           style={{
             background:
-              "linear-gradient(135deg, transparent 50%, #F6EFE2 50%), linear-gradient(45deg, #F6EFE2 50%, transparent 50%)",
+              "linear-gradient(135deg, transparent 50%, var(--cream) 50%), linear-gradient(45deg, var(--cream) 50%, transparent 50%)",
             backgroundSize: "16px 16px",
             backgroundRepeat: "repeat-x",
             backgroundPosition: "left top",
@@ -142,13 +142,13 @@ function ReceiptContent() {
       <div className="no-print flex gap-3 mb-3">
         <Link
           href="/pesanan-saya"
-          className="flex-1 text-center border border-[#E4D9C2] rounded-lg py-2.5 text-sm font-semibold bg-white"
+          className="flex-1 text-center border border-[var(--line)] rounded-lg py-2.5 text-sm font-semibold bg-white"
         >
           Lihat Pesanan Saya
         </Link>
         <Link
           href="/menu"
-          className="flex-1 text-center bg-[#C1652F] text-white rounded-lg py-2.5 text-sm font-semibold"
+          className="flex-1 text-center bg-[var(--rust)] text-white rounded-lg py-2.5 text-sm font-semibold"
         >
           Pesan Lagi
         </Link>
@@ -156,7 +156,7 @@ function ReceiptContent() {
 
       <button
         onClick={() => window.print()}
-        className="no-print w-full text-center border border-[#2F5233] text-[#2F5233] rounded-lg py-2.5 text-sm font-semibold bg-white hover:bg-[#DCE3D0]"
+        className="no-print w-full text-center border border-[var(--forest)] text-[var(--forest)] rounded-lg py-2.5 text-sm font-semibold bg-white hover:bg-[var(--forest-tint)]"
       >
         🖨️ Cetak Struk
       </button>
@@ -197,7 +197,7 @@ function ReceiptContent() {
 
 export default function ReceiptPage() {
   return (
-    <Suspense fallback={<p className="text-center text-sm text-[#6E5A47] py-16">Memuat...</p>}>
+    <Suspense fallback={<p className="text-center text-sm text-[var(--walnut-soft)] py-16">Memuat...</p>}>
       <ReceiptContent />
     </Suspense>
   );

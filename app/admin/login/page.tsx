@@ -35,24 +35,24 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F6EFE2] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--cream)] px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">
+        <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">
           Masuk sebagai Admin
         </h1>
-        <p className="text-sm text-[#6E5A47] mb-6">
+        <p className="text-sm text-[var(--walnut-soft)] mb-6">
           Warung Depan Rumah — E-Kasir
         </p>
 
         {error && (
-          <div className="mb-4 text-sm text-[#B23A34] bg-[#F5DEDC] border border-[#B23A34]/30 rounded-lg px-3 py-2">
+          <div className="mb-4 text-sm text-[var(--red)] bg-[var(--red-tint)] border border-[var(--red)]/30 rounded-lg px-3 py-2">
             {error}
           </div>
         )}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#6E5A47] mb-1">
+            <label className="block text-xs font-semibold text-[var(--walnut-soft)] mb-1">
               Email
             </label>
             <input
@@ -60,11 +60,11 @@ export default function AdminLoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2F5233]"
+              className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--forest)]"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[#6E5A47] mb-1">
+            <label className="block text-xs font-semibold text-[var(--walnut-soft)] mb-1">
               Password
             </label>
             <input
@@ -72,13 +72,13 @@ export default function AdminLoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2F5233]"
+              className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--forest)]"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#2F5233] text-white font-semibold rounded-lg py-2.5 text-sm disabled:opacity-50"
+            className="w-full bg-[var(--forest)] text-white font-semibold rounded-lg py-2.5 text-sm disabled:opacity-50"
           >
             {loading ? "Memproses..." : "Masuk"}
           </button>
