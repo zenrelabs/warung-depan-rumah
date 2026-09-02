@@ -59,7 +59,7 @@ export default function PengaturanPage() {
       setLogoUrl(settings.StoreLogoUrl || "");
       setThemeColor(settings.ThemeColor || "hijau");
       setStoreOpen((settings.StoreOpen ?? "true").toLowerCase() === "true");
-      setAllowOutside((settings.AllowOrderOutsideHours ?? "false") === "true");
+      setAllowOutside((settings.AllowOrderOutsideHours ?? "false").toLowerCase() === "true");
 
       if (prof?.role === "super") {
         setSalariesLoading(true);
@@ -178,7 +178,7 @@ export default function PengaturanPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-8 text-[#3B2A1E]">
-      <h1 className="text-2xl font-bold text-[#2F5233]">Pengaturan</h1>
+      <h1 className="font-display text-2xl font-bold text-[#2F5233]">Pengaturan</h1>
 
       {message && (
         <div className="rounded-lg border border-[#DCE3D0] bg-[#F6EFE2] px-4 py-3 text-sm">
@@ -188,7 +188,7 @@ export default function PengaturanPage() {
 
       {/* IDENTITAS TOKO */}
       <section className="space-y-4 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Identitas Toko</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Identitas Toko</h2>
 
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 rounded-full bg-[#EFE4CD] overflow-hidden flex items-center justify-center border border-[#E4D9C2]">
@@ -267,7 +267,7 @@ export default function PengaturanPage() {
 
       {/* WARNA TEMA */}
       <section className="space-y-3 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Warna Tema</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Warna Tema</h2>
         <div className="flex flex-wrap gap-3">
           {THEME_PRESETS.map((preset) => (
             <button
@@ -291,7 +291,7 @@ export default function PengaturanPage() {
 
       {/* TOGGLES */}
       <section className="space-y-4 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Status Operasional</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Status Operasional</h2>
 
         <div className="flex items-center justify-between">
           <div>
@@ -338,7 +338,7 @@ export default function PengaturanPage() {
 
       {/* PENGGAJIAN - KHUSUS SUPER */}
       <section className="space-y-4 rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Penggajian</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Penggajian</h2>
         {!isSuper ? (
           <p className="text-sm text-[#6E5A47]">🔒 khusus Super Admin</p>
         ) : salariesLoading ? (
@@ -351,7 +351,7 @@ export default function PengaturanPage() {
               <div key={s.id} className="flex items-center justify-between py-3">
                 <div>
                   <p className="text-sm font-medium">{s.nama}</p>
-                  <p className="text-xs text-[#6E5A47]">
+                  <p className="text-xs text-[#6E5A47] font-mono">
                     Rp {s.nominal.toLocaleString("id-ID")}
                     {s.sudah_dibayar && s.tanggal_bayar
                       ? ` · dibayar ${new Date(s.tanggal_bayar).toLocaleDateString("id-ID")}`
