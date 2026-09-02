@@ -37,7 +37,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F6EFE2] px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">
+        <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">
           Masuk sebagai Admin
         </h1>
         <p className="text-sm text-[#6E5A47] mb-6">
@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
         </p>
 
         {error && (
-          <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          <div className="mb-4 text-sm text-[#B23A34] bg-[#F5DEDC] border border-[#B23A34]/30 rounded-lg px-3 py-2">
             {error}
           </div>
         )}
