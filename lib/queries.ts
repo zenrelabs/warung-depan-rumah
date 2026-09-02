@@ -348,13 +348,11 @@ type CreateOrderPayload = {
   note?: string;
   items: { id: number; name: string; qty: number; price: number }[];
   payment: string;
-  paidNow: boolean;
 };
 
 export async function createOrder(payload: CreateOrderPayload): Promise<Order> {
   const supabase = createBrowserClient();
   const total = payload.items.reduce((s, it) => s + it.price * it.qty, 0);
-  const paidNow = !!payload.paidNow;
 
   const { data, error } = await supabase
     .from("orders")
@@ -365,7 +363,7 @@ export async function createOrder(payload: CreateOrderPayload): Promise<Order> {
       items: payload.items,
       total,
       payment_method: payload.payment,
-      paid: paidNow,
+      paid: false,
       status: "Diproses",
     })
     .select()
@@ -397,16 +395,7 @@ async function decrementStockForItems(items: { id: number; qty: number }[]) {
 
 export async function updateOrderStatus(id: number, status: Order["status"]) {
   const supabase = createBrowserClient();
-  const updates: Partial<Order> = { status };
-  if (status === "Selesai") updates.paid = true;
-  const { error } = await supabase.from("orders").update(updates).eq("id", id);
-  if (error) throw error;
-}
-
-export async function markOrderPaidWithProof(id: number, buktiUrl: string | null) {
-  const supabase = createBrowserClient();
-  const updates: Partial<Order> = { paid: true };
-  if (buktiUrl) updates.bukti_bayar = buktiUrl;
+  const updates: Partial<Order> = { status, paid: status === "Selesai" };
   const { error } = await supabase.from("orders").update(updates).eq("id", id);
   if (error) throw error;
 }

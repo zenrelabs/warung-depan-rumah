@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getOrders, updateOrderStatus, markOrderPaidWithProof } from "@/lib/queries";
-import { uploadImage } from "@/lib/storage";
+import { getOrders, updateOrderStatus } from "@/lib/queries";
 import type { Order } from "@/lib/types";
 
 function rupiah(n: number) {
@@ -28,9 +27,6 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [detailOrder, setDetailOrder] = useState<Order | null>(null);
-  const [proofFile, setProofFile] = useState<File | null>(null);
-  const [proofPreview, setProofPreview] = useState("");
-  const [markingPaid, setMarkingPaid] = useState(false);
 
   function load() {
     setLoading(true);
@@ -47,40 +43,14 @@ export default function AdminOrdersPage() {
     try {
       await updateOrderStatus(id, status);
       load();
+      window.dispatchEvent(new Event("orders-updated"));
     } catch (err) {
       alert("Gagal update status: " + (err as Error).message);
     }
   }
 
-  function openMarkPaid(order: Order) {
+  function openDetail(order: Order) {
     setDetailOrder(order);
-    setProofFile(null);
-    setProofPreview("");
-  }
-
-  function onProofChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setProofFile(file);
-    setProofPreview(URL.createObjectURL(file));
-  }
-
-  async function handleMarkPaid() {
-    if (!detailOrder) return;
-    setMarkingPaid(true);
-    try {
-      let buktiUrl: string | null = null;
-      if (proofFile) {
-        buktiUrl = await uploadImage(proofFile, "bukti-bayar");
-      }
-      await markOrderPaidWithProof(detailOrder.id, buktiUrl);
-      setDetailOrder(null);
-      load();
-    } catch (err) {
-      alert("Gagal menandai lunas: " + (err as Error).message);
-    } finally {
-      setMarkingPaid(false);
-    }
   }
 
   return (
@@ -112,7 +82,7 @@ export default function AdminOrdersPage() {
                 <tr key={o.id} className="border-b border-[var(--line)] last:border-0">
                   <td
                     className="p-3 font-mono text-[var(--rust)] cursor-pointer"
-                    onClick={() => openMarkPaid(o)}
+                    onClick={() => openDetail(o)}
                   >
                     {o.kode_pesanan}
                   </td>
@@ -123,18 +93,16 @@ export default function AdminOrdersPage() {
                   <td className="p-3 font-mono">{rupiah(o.total)}</td>
                   <td className="p-3">
                     {o.payment_method}
-                    {o.paid ? (
-                      <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--green-tint)] text-[var(--green-ok)]">
-                        Lunas
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => openMarkPaid(o)}
-                        className="ml-2 text-xs font-semibold border border-[var(--line)] rounded-full px-2.5 py-0.5"
-                      >
-                        Tandai Lunas
-                      </button>
-                    )}
+                    <span
+                      className={
+                        "ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full " +
+                        (o.paid
+                          ? "bg-[var(--green-tint)] text-[var(--green-ok)]"
+                          : "bg-[var(--red-tint)] text-[var(--red)]")
+                      }
+                    >
+                      {o.paid ? "Lunas" : "Belum Lunas"}
+                    </span>
                   </td>
                   <td className="p-3">
                     <select
@@ -206,26 +174,6 @@ export default function AdminOrdersPage() {
                 <span>Total</span>
                 <span className="font-mono text-[var(--forest-dark)]">{rupiah(detailOrder.total)}</span>
               </div>
-
-              {!detailOrder.paid && (
-                <div className="border-t border-[var(--line)] pt-4">
-                  <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-2">
-                    Lampirkan bukti bayar (opsional)
-                  </label>
-                  <input type="file" accept="image/*" onChange={onProofChange} className="text-xs mb-2" />
-                  {proofPreview && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={proofPreview} alt="" className="w-24 h-24 object-cover rounded-lg mb-3" />
-                  )}
-                  <button
-                    onClick={handleMarkPaid}
-                    disabled={markingPaid}
-                    className="w-full bg-[var(--forest)] text-white font-semibold text-sm rounded-lg py-2.5 disabled:opacity-50"
-                  >
-                    {markingPaid ? "Memproses..." : "Tandai Lunas"}
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>

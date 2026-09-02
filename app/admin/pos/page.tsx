@@ -26,7 +26,6 @@ export default function AdminPosPage() {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [payment, setPayment] = useState("Cash");
-  const [paidNow, setPaidNow] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
 
@@ -76,8 +75,8 @@ export default function AdminPosPage() {
         phone: phone.trim(),
         items: cartLines.map((c) => ({ id: c.m.id, name: c.m.nama, qty: c.qty, price: c.m.harga })),
         payment,
-        paidNow,
       });
+      window.dispatchEvent(new Event("orders-updated"));
       setSuccessMsg(`Pesanan ${order.kode_pesanan} berhasil dibuat`);
       setCart([]);
       setCustomerName("");
@@ -249,11 +248,6 @@ export default function AdminPosPage() {
               </button>
             ))}
           </div>
-
-          <label className="flex items-center gap-2 text-sm font-semibold mb-4">
-            <input type="checkbox" checked={paidNow} onChange={(e) => setPaidNow(e.target.checked)} />
-            Tandai lunas sekarang
-          </label>
 
           <button
             onClick={handleSubmit}

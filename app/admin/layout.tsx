@@ -28,6 +28,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const isLoginPage = pathname === "/admin/login";
 
+  function refreshPendingCount() {
+    getOrders().then((orders) => {
+      setPendingOrdersCount(orders.filter((o) => o.status === "Diproses").length);
+    });
+  }
+
   useEffect(() => {
     if (isLoginPage) {
       setLoading(false);
@@ -41,9 +47,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     getSettings().then((s) => {
       setStoreOpen((s.StoreOpen ?? "true").toLowerCase() === "true");
     });
-    getOrders().then((orders) => {
-      setPendingOrdersCount(orders.filter((o) => o.status === "Diproses").length);
-    });
+    refreshPendingCount();
+
+    window.addEventListener("orders-updated", refreshPendingCount);
+    return () => window.removeEventListener("orders-updated", refreshPendingCount);
   }, [isLoginPage]);
 
   async function handleLogout() {

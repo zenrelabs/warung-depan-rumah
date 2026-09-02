@@ -55,7 +55,6 @@ export default function CheckoutPage() {
         note: note.trim(),
         items: cartLines.map((c) => ({ id: c.m.id, name: c.m.nama, qty: c.qty, price: c.m.harga })),
         payment,
-        paidNow: false,
       });
       saveMyOrderId(order.kode_pesanan);
       setCart([]);
