@@ -366,7 +366,7 @@ export async function createOrder(payload: CreateOrderPayload): Promise<Order> {
       total,
       payment_method: payload.payment,
       paid: paidNow,
-      status: paidNow ? "Selesai" : "Diproses",
+      status: "Diproses",
     })
     .select()
     .single();
