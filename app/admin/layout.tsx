@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { getMyProfile, getSettings, getOrders } from "@/lib/queries";
 import type { AdminProfile } from "@/lib/types";
 
@@ -19,7 +18,6 @@ const NAV_ITEMS = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const supabase = createClient();
 
   const [profile, setProfile] = useState<AdminProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,17 +47,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setStoreOpen((s.StoreOpen ?? "true").toLowerCase() === "true");
       setLogoUrl(s.StoreLogoUrl || "");
     });
-    refreshPendingCount();
-
-    window.addEventListener("orders-updated", refreshPendingCount);
+    refreshPendingCount();    window.addEventListener("orders-updated", refreshPendingCount);
     return () => window.removeEventListener("orders-updated", refreshPendingCount);
   }, [isLoginPage]);
-
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    router.push("/admin/login");
-    router.refresh();
-  }
 
   if (isLoginPage) return <>{children}</>;
 
@@ -78,14 +68,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[var(--cream)]">
-      {/* FLOATING LOGOUT - MOBILE ONLY (desktop pakai tombol logout di sidebar) */}
-      <button
-        onClick={handleLogout}
-        className="md:hidden fixed top-3.5 left-3.5 z-40 flex items-center gap-1.5 bg-[var(--white)] border border-[var(--line)] text-[var(--red)] text-xs font-semibold px-3 py-2 rounded-full shadow-md"
-      >
-        ⎋ Logout
-      </button>
-
       {/* SIDEBAR - DESKTOP */}
       <aside className="hidden md:flex w-60 flex-shrink-0 bg-[var(--white)] border-r border-[var(--line)] p-5 flex-col">
         <div className="mb-5 pb-5 border-b border-[var(--line)] flex items-center gap-3">
@@ -158,12 +140,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             Masuk sebagai <br />
             <b className="text-[var(--walnut)]">{profile.nama}</b>
           </p>
-          <button
-            onClick={handleLogout}
-            className="text-left text-sm font-semibold text-[var(--red)] px-3 py-2 rounded-lg hover:bg-[var(--red-tint)] w-full"
-          >
-            Logout
-          </button>
+          {/* Tombol Logout dipindahkan ke halaman Pengaturan */}
         </div>
       </aside>
 
