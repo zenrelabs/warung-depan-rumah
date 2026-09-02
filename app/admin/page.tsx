@@ -35,16 +35,13 @@ export default function AdminDashboardPage() {
       const allOrders = await getOrders();
       setOrders(allOrders);
 
-      if (prof?.role === "super") {
-        const menuList = await getMenu();
-        setMenu(menuList);
-      }
+      const menuList = await getMenu();
+      setMenu(menuList);
+
       setLoading(false);
     }
     load();
   }, []);
-
-  const isSuper = profile?.role === "super";
   const today = useMemo(() => new Date(), []);
 
   const todayCount = useMemo(
@@ -64,7 +61,6 @@ export default function AdminDashboardPage() {
   const totalRevenue = useMemo(() => {
     return orders.filter((o) => o.paid && o.status !== "Dibatalkan").reduce((sum, o) => sum + o.total, 0);
   }, [orders]);
-
   const trend7Days = useMemo(() => {
     const days: { label: string; date: Date; total: number }[] = [];
     for (let i = 6; i >= 0; i--) {
@@ -86,15 +82,14 @@ export default function AdminDashboardPage() {
   const omset7Hari = useMemo(() => {
     return trend7Days.reduce((sum, d) => sum + d.total, 0);
   }, [trend7Days]);
-
   const maxTrendValue = useMemo(
     () => Math.max(1, ...trend7Days.map((d) => d.total)),
     [trend7Days]
   );
 
   const menuTerlaris = useMemo(() => {
-    return isSuper ? menu.filter((m) => m.rekomendasi) : [];
-  }, [menu, isSuper]);
+    return menu.filter((m) => m.rekomendasi);
+  }, [menu]);
 
   if (loading) {
     return <div className="p-6 text-[var(--walnut)]">Memuat dashboard...</div>;
@@ -104,10 +99,9 @@ export default function AdminDashboardPage() {
     <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-8 text-[var(--walnut)]">
       <h1 className="font-display text-2xl font-bold text-[var(--forest)]">Dashboard</h1>
 
-      {/* STAT BOXES - SEMUA ROLE */}
+      {/* STAT BOXES */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4">
-          <p className="text-xs text-[var(--walnut-soft)] mb-1">Pesanan Hari Ini</p>
+        <div className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4">         <p className="text-xs text-[var(--walnut-soft)] mb-1">Pesanan Hari Ini</p>
           <p className="text-2xl font-bold font-mono text-[var(--forest)]">{todayCount}</p>
         </div>
         <div className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4">
@@ -120,7 +114,7 @@ export default function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* OMSET & TREN - SEMUA ROLE */}
+      {/* OMSET & TREN */}
       <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-4">
         <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Omset</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -156,12 +150,10 @@ export default function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* KHUSUS SUPER: MENU TERLARIS */}
+      {/* MENU TERLARIS */}
       <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-3">
         <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Menu Rekomendasi / Terlaris</h2>
-        {!isSuper ? (
-          <p className="text-sm text-[var(--walnut-soft)]">🔒 khusus Super Admin</p>
-        ) : menuTerlaris.length === 0 ? (
+        {menuTerlaris.length === 0 ? (
           <p className="text-sm text-[var(--walnut-soft)]">Belum ada menu yang ditandai rekomendasi.</p>
         ) : (
           <ul className="divide-y divide-[var(--line)]">
@@ -175,7 +167,7 @@ export default function AdminDashboardPage() {
         )}
       </section>
 
-      {/* 5 PESANAN TERBARU - SEMUA ROLE */}
+      {/* 5 PESANAN TERBARU */}
       <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-3">
         <h2 className="font-display text-lg font-semibold text-[var(--forest)]">5 Pesanan Terbaru</h2>
         {recentOrders.length === 0 ? (
@@ -211,7 +203,7 @@ export default function AdminDashboardPage() {
         )}
       </section>
 
-      {/* MODAL DETAIL STRUK - div sederhana, konten pendek jadi tidak perlu <dialog> */}
+      {/* MODAL DETAIL STRUK */}
       {selectedOrder && (
         <div
           className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
