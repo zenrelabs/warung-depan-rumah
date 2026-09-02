@@ -6,6 +6,58 @@
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
+:root {
+  --cream: #F6EFE2;
+  --cream-alt: #EFE4CD;
+  --white: #FFFDF8;
+  --forest: #2F5233;
+  --forest-dark: #1F3A23;
+  --forest-tint: #DCE3D0;
+  --rust: #C1652F;
+  --rust-dark: #9C4E22;
+  --rust-tint: #F1DCC7;
+  --walnut: #3B2A1E;
+  --walnut-soft: #6E5A47;
+  --line: #E4D9C2;
+  --red: #B23A34;
+  --red-tint: #F5DEDC;
+  --amber: #B5811E;
+  --amber-tint: #F3E6C4;
+  --blue: #2A5C8A;
+  --blue-tint: #DCE7F1;
+  --purple: #6A4E8C;
+  --purple-tint: #E6DEEF;
+  --green-ok: #3E7A46;
+  --green-tint: #DDEBDC;
+}
+[data-theme="dark"] {
+  --cream: #1E1B16;
+  --cream-alt: #272219;
+  --white: #28241C;
+  --forest: #4C8058;
+  --forest-dark: #8FC79A;
+  --forest-tint: #2A3524;
+  --rust: #E0824A;
+  --rust-dark: #C1652F;
+  --rust-tint: #3A2A1E;
+  --walnut: #EDE6DA;
+  --walnut-soft: #B4A891;
+  --line: #3D362A;
+  --red: #E2665F;
+  --red-tint: #3A211F;
+  --amber: #E0B15C;
+  --amber-tint: #3A2E15;
+  --blue: #7DAEDE;
+  --blue-tint: #1E2B38;
+  --purple: #B7A0D6;
+  --purple-tint: #2C2438;
+  --green-ok: #7FCB88;
+  --green-tint: #1F2E1F;
+}
+
 body {
   font-family: var(--font-sans);
+  background-color: var(--cream);
+  color: var(--walnut);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
