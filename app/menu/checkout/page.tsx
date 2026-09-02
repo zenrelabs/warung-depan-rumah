@@ -81,7 +81,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
-      <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">Checkout</h1>
+      <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">Checkout</h1>
       <p className="text-sm text-[#6E5A47] mb-6">Lengkapi data pesanan sebelum dikirim</p>
 
       <div className="bg-white rounded-2xl shadow p-5 mb-4">
@@ -131,10 +131,18 @@ export default function CheckoutPage() {
             </label>
           ))}
         </div>
+        {payment === "QRIS" && (
+          <div className="mt-3 flex flex-col items-center gap-2 border border-dashed border-[#E4D9C2] rounded-lg py-4">
+            <div className="w-32 h-32 bg-[#EFE4CD] border border-[#E4D9C2] rounded-lg flex items-center justify-center text-[10px] text-[#6E5A47] text-center px-2">
+              QR Code akan ditampilkan di sini
+            </div>
+            <span className="text-xs text-[#6E5A47]">Scan lalu tunjukkan bukti pembayaran ke kasir</span>
+          </div>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl shadow p-5 mb-4">
-        <h3 className="text-sm font-semibold mb-3">Ringkasan Pesanan</h3>
+        <h3 className="font-display text-sm font-semibold mb-3">Ringkasan Pesanan</h3>
         {cartLines.map((c) => (
           <div key={c.id} className="flex justify-between text-sm py-1.5 border-b border-dotted border-[#E4D9C2]">
             <span>
