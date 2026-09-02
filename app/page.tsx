@@ -19,10 +19,10 @@ export default function HomePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-      <h1 className="text-4xl md:text-5xl font-bold text-[#1F3A23] mb-3">
+      <h1 className="text-4xl md:text-5xl font-bold text-[var(--forest-dark)] mb-3">
         {settings.StoreName || "Warung Depan Rumah"}
       </h1>
-      <p className="text-base md:text-lg text-[#6E5A47] mb-8">
+      <p className="text-base md:text-lg text-[var(--walnut-soft)] mb-8">
         Kuliner Rumahan, Rasa Profesional
       </p>
 
@@ -40,14 +40,14 @@ export default function HomePage() {
       <div>
         <Link
           href="/menu"
-          className="inline-block bg-[#C1652F] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[#a95423] transition"
+          className="inline-block bg-[var(--rust)] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[var(--rust-dark)] transition"
         >
           Lihat Menu
         </Link>
       </div>
 
       {!loading && settings.StoreAddress && (
-        <div className="mt-10 text-sm text-[#6E5A47] space-y-1">
+        <div className="mt-10 text-sm text-[var(--walnut-soft)] space-y-1">
           <p>{settings.StoreAddress}</p>
           {settings.StorePhone && <p>{settings.StorePhone}</p>}
         </div>

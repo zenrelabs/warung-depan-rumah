@@ -169,20 +169,20 @@ export default function AdminMenuPage() {
     <div>
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">Kelola Menu</h1>
-          <p className="text-sm text-[#6E5A47]">Tambah, ubah, atau tandai status menu</p>
+          <h1 className="text-2xl font-semibold text-[var(--forest-dark)] mb-1">Kelola Menu</h1>
+          <p className="text-sm text-[var(--walnut-soft)]">Tambah, ubah, atau tandai status menu</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={handleSeedDefault}
             disabled={seeding}
-            className="bg-[#2F5233] text-white font-semibold text-sm rounded-lg px-4 py-2 disabled:opacity-50"
+            className="bg-[var(--forest)] text-white font-semibold text-sm rounded-lg px-4 py-2 disabled:opacity-50"
           >
             {seeding ? "Memproses..." : "📥 Masukkan Menu Default"}
           </button>
           <button
             onClick={openAdd}
-            className="bg-[#C1652F] text-white font-semibold text-sm rounded-lg px-4 py-2"
+            className="bg-[var(--rust)] text-white font-semibold text-sm rounded-lg px-4 py-2"
           >
             + Tambah Menu
           </button>
@@ -190,12 +190,12 @@ export default function AdminMenuPage() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-[#6E5A47]">Memuat...</p>
+        <p className="text-sm text-[var(--walnut-soft)]">Memuat...</p>
       ) : (
         <div className="bg-white rounded-2xl shadow overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase text-[#6E5A47] border-b border-[#E4D9C2]">
+              <tr className="text-left text-xs uppercase text-[var(--walnut-soft)] border-b border-[var(--line)]">
                 <th className="p-3"></th>
                 <th className="p-3">Nama</th>
                 <th className="p-3">Kategori</th>
@@ -208,9 +208,9 @@ export default function AdminMenuPage() {
             </thead>
             <tbody>
               {menu.map((m) => (
-                <tr key={m.id} className="border-b border-[#E4D9C2] last:border-0">
+                <tr key={m.id} className="border-b border-[var(--line)] last:border-0">
                   <td className="p-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#EFD2BC] flex items-center justify-center overflow-hidden text-lg" style={{ width: 36, height: 36, minWidth: 36, minHeight: 36 }}>
+                    <div className="w-9 h-9 rounded-lg bg-[var(--rust-tint)] flex items-center justify-center overflow-hidden text-lg" style={{ width: 36, height: 36, minWidth: 36, minHeight: 36 }}>
                       {m.foto ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={m.foto} alt={m.nama} className="w-full h-full object-cover" />
@@ -221,7 +221,7 @@ export default function AdminMenuPage() {
                   </td>
                   <td className="p-3">
                     <div className="font-bold">{m.nama}</div>
-                    <div className="text-xs text-[#6E5A47]">{m.deskripsi}</div>
+                    <div className="text-xs text-[var(--walnut-soft)]">{m.deskripsi}</div>
                   </td>
                   <td className="p-3">{m.kategori}</td>
                   <td className="p-3 font-mono">{rupiah(m.harga)}</td>
@@ -231,8 +231,8 @@ export default function AdminMenuPage() {
                       className={
                         "text-xs font-bold px-2.5 py-1 rounded-full " +
                         (m.status === "tersedia"
-                          ? "bg-[#DDEBDC] text-[#3E7A46]"
-                          : "bg-[#F5DEDC] text-[#B23A34]")
+                          ? "bg-[var(--green-tint)] text-[var(--green-ok)]"
+                          : "bg-[var(--red-tint)] text-[var(--red)]")
                       }
                     >
                       {m.status === "tersedia" ? "Tersedia" : "Habis"}
@@ -240,10 +240,10 @@ export default function AdminMenuPage() {
                   </td>
                   <td className="p-3">{m.rekomendasi ? "⭐" : "-"}</td>
                   <td className="p-3">
-                    <button onClick={() => openEdit(m)} className="text-[#6E5A47] px-1">
+                    <button onClick={() => openEdit(m)} className="text-[var(--walnut-soft)] px-1">
                       ✎
                     </button>
-                    <button onClick={() => handleDelete(m.id)} className="text-[#6E5A47] px-1">
+                    <button onClick={() => handleDelete(m.id)} className="text-[var(--walnut-soft)] px-1">
                       🗑
                     </button>
                   </td>
@@ -261,18 +261,18 @@ export default function AdminMenuPage() {
       >
         <div className="p-6 max-h-[85vh] overflow-y-auto">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-[#1F3A23]">
+            <h3 className="text-lg font-semibold text-[var(--forest-dark)]">
               {form.id ? "Edit Menu" : "Tambah Menu"}
             </h3>
-            <button onClick={() => setShowForm(false)} className="text-[#6E5A47]">
+            <button onClick={() => setShowForm(false)} className="text-[var(--walnut-soft)]">
               ✕
             </button>
           </div>
 
           <div className="mb-4">
-            <label className="block text-xs font-bold text-[#6E5A47] mb-1">Foto Menu</label>
+            <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Foto Menu</label>
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-xl bg-[#F6EFE2] border border-dashed border-[#E4D9C2] flex items-center justify-center overflow-hidden text-2xl" style={{ width: 64, height: 64, minWidth: 64, minHeight: 64 }}>
+              <div className="w-16 h-16 rounded-xl bg-[var(--cream)] border border-dashed border-[var(--line)] flex items-center justify-center overflow-hidden text-2xl" style={{ width: 64, height: 64, minWidth: 64, minHeight: 64 }}>
                 {preview ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={preview} alt="" className="w-full h-full object-cover" />
@@ -285,22 +285,22 @@ export default function AdminMenuPage() {
           </div>
 
           <div className="mb-3">
-            <label className="block text-xs font-bold text-[#6E5A47] mb-1">Nama Menu</label>
+            <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Nama Menu</label>
             <input
               value={form.nama}
               onChange={(e) => setForm({ ...form, nama: e.target.value })}
-              className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div>
-              <label className="block text-xs font-bold text-[#6E5A47] mb-1">Kategori</label>
+              <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Kategori</label>
               <input
                 list="catList"
                 value={form.kategori}
                 onChange={(e) => setForm({ ...form, kategori: e.target.value })}
-                className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
                 placeholder="Ketik/pilih kategori"
               />
               <datalist id="catList">
@@ -310,35 +310,35 @@ export default function AdminMenuPage() {
               </datalist>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#6E5A47] mb-1">Harga (Rp)</label>
+              <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Harga (Rp)</label>
               <input
                 type="number"
                 value={form.harga}
                 onChange={(e) => setForm({ ...form, harga: e.target.value })}
-                className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div>
-              <label className="block text-xs font-bold text-[#6E5A47] mb-1">Stok</label>
+              <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Stok</label>
               <input
                 type="number"
                 value={form.stok}
                 onChange={(e) => setForm({ ...form, stok: e.target.value })}
                 placeholder="Kosongkan jika tak dihitung"
-                className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#6E5A47] mb-1">Status</label>
+              <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Status</label>
               <select
                 value={form.status}
                 onChange={(e) =>
                   setForm({ ...form, status: e.target.value as MenuItem["status"] })
                 }
-                className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
               >
                 <option value="tersedia">Tersedia</option>
                 <option value="habis">Habis Sementara</option>
@@ -347,11 +347,11 @@ export default function AdminMenuPage() {
           </div>
 
           <div className="mb-3">
-            <label className="block text-xs font-bold text-[#6E5A47] mb-1">Deskripsi</label>
+            <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Deskripsi</label>
             <textarea
               value={form.deskripsi}
               onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
-              className="w-full rounded-lg border border-[#E4D9C2] px-3 py-2 text-sm min-h-[64px]"
+              className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm min-h-[64px]"
             />
           </div>
 
@@ -367,14 +367,14 @@ export default function AdminMenuPage() {
           <div className="flex justify-end gap-2">
             <button
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 rounded-lg text-sm font-semibold border border-[#E4D9C2]"
+              className="px-4 py-2 rounded-lg text-sm font-semibold border border-[var(--line)]"
             >
               Batal
             </button>
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#C1652F] text-white disabled:opacity-50"
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-[var(--rust)] text-white disabled:opacity-50"
             >
               {saving ? "Menyimpan..." : "Simpan"}
             </button>
