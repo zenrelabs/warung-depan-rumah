@@ -72,6 +72,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!profile) return null;
 
   const isSuper = profile.role === "super";
+  const navItems = NAV_ITEMS.filter((item) => item.href !== "/admin/laporan" || isSuper);
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[var(--cream)]">
       {/* FLOATING LOGOUT - MOBILE ONLY (desktop pakai tombol logout di sidebar) */}
@@ -110,7 +112,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </span>
 
         <nav className="flex flex-col gap-1 flex-1">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const active = pathname === item.href;
             const showBadge = item.href === "/admin/orders" && pendingOrdersCount > 0;
             return (
@@ -158,7 +160,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* BOTTOM NAV - MOBILE */}
       <nav className="md:hidden fixed bottom-0 inset-x-0 bg-[var(--white)] border-t border-[var(--line)] flex justify-around py-2 px-1 z-30">
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const active = pathname === item.href;
           const showBadge = item.href === "/admin/orders" && pendingOrdersCount > 0;
           return (
