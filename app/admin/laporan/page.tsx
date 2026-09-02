@@ -51,7 +51,10 @@ export default function LaporanPage() {
     init();
   }, []);
 
-  const paidOrders = useMemo(() => orders.filter((o) => o.paid), [orders]);
+  const paidOrders = useMemo(
+    () => orders.filter((o) => o.paid && o.status !== "Dibatalkan"),
+    [orders]
+  );
   const totalOmset = useMemo(
     () => paidOrders.reduce((sum, o) => sum + o.total, 0),
     [paidOrders]
