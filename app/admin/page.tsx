@@ -96,34 +96,34 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-8 text-[#3B2A1E]">
-      <h1 className="text-2xl font-bold text-[#2F5233]">Dashboard</h1>
+      <h1 className="font-display text-2xl font-bold text-[#2F5233]">Dashboard</h1>
 
       {/* STAT BOXES - SEMUA ROLE */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4">
           <p className="text-xs text-[#6E5A47] mb-1">Pesanan Hari Ini</p>
-          <p className="text-2xl font-bold text-[#2F5233]">{todayCount}</p>
+          <p className="text-2xl font-bold font-mono text-[#2F5233]">{todayCount}</p>
         </div>
         <div className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4">
           <p className="text-xs text-[#6E5A47] mb-1">Sedang Diproses</p>
-          <p className="text-2xl font-bold text-[#B5811E]">{processingCount}</p>
+          <p className="text-2xl font-bold font-mono text-[#B5811E]">{processingCount}</p>
         </div>
         <div className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4">
           <p className="text-xs text-[#6E5A47] mb-1">Dibatalkan</p>
-          <p className="text-2xl font-bold text-[#B23A34]">{cancelledCount}</p>
+          <p className="text-2xl font-bold font-mono text-[#B23A34]">{cancelledCount}</p>
         </div>
       </section>
 
       {/* KHUSUS SUPER: REVENUE & TREN */}
       <section className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6 space-y-4">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Omset</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Omset</h2>
         {!isSuper ? (
           <p className="text-sm text-[#6E5A47]">🔒 khusus Super Admin</p>
         ) : (
           <>
             <div>
               <p className="text-xs text-[#6E5A47] mb-1">Total Revenue (semua waktu)</p>
-              <p className="text-3xl font-bold text-[#2F5233]">{formatRupiah(totalRevenue)}</p>
+              <p className="text-3xl font-bold font-mono text-[#2F5233]">{formatRupiah(totalRevenue)}</p>
             </div>
             <div>
               <p className="text-xs text-[#6E5A47] mb-2">Tren Omset 7 Hari Terakhir</p>
@@ -148,7 +148,7 @@ export default function AdminDashboardPage() {
 
       {/* KHUSUS SUPER: MENU TERLARIS */}
       <section className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6 space-y-3">
-        <h2 className="text-lg font-semibold text-[#2F5233]">Menu Rekomendasi / Terlaris</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">Menu Rekomendasi / Terlaris</h2>
         {!isSuper ? (
           <p className="text-sm text-[#6E5A47]">🔒 khusus Super Admin</p>
         ) : menuTerlaris.length === 0 ? (
@@ -158,7 +158,7 @@ export default function AdminDashboardPage() {
             {menuTerlaris.map((m) => (
               <li key={m.id} className="flex items-center justify-between py-2 text-sm">
                 <span>{m.nama}</span>
-                <span className="text-[#6E5A47]">{formatRupiah(m.harga)}</span>
+                <span className="text-[#6E5A47] font-mono">{formatRupiah(m.harga)}</span>
               </li>
             ))}
           </ul>
@@ -167,7 +167,7 @@ export default function AdminDashboardPage() {
 
       {/* 5 PESANAN TERBARU - SEMUA ROLE */}
       <section className="rounded-xl border border-[#E4D9C2] bg-[#FFFDF8] p-4 md:p-6 space-y-3">
-        <h2 className="text-lg font-semibold text-[#2F5233]">5 Pesanan Terbaru</h2>
+        <h2 className="font-display text-lg font-semibold text-[#2F5233]">5 Pesanan Terbaru</h2>
         {recentOrders.length === 0 ? (
           <p className="text-sm text-[#6E5A47]">Belum ada pesanan.</p>
         ) : (
@@ -190,7 +190,7 @@ export default function AdminDashboardPage() {
                       ? "bg-[#DDEBDC] text-[#3E7A46]"
                       : o.status === "Dibatalkan"
                       ? "bg-[#F5DEDC] text-[#B23A34]"
-                      : "bg-[#F3E6C4] text-[#B5811E]"
+                      : "bg-[#DCE7F1] text-[#2A5C8A]"
                   }`}
                 >
                   {o.status}
@@ -212,7 +212,7 @@ export default function AdminDashboardPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#2F5233]">{selectedOrder.kode_pesanan}</h3>
+              <h3 className="text-lg font-bold font-mono text-[#2F5233]">{selectedOrder.kode_pesanan}</h3>
               <button
                 onClick={() => setSelectedOrder(null)}
                 className="text-[#6E5A47] text-sm"
@@ -228,13 +228,13 @@ export default function AdminDashboardPage() {
               {selectedOrder.items.map((it, idx) => (
                 <div key={idx} className="flex justify-between py-1.5">
                   <span>{it.qty}x {it.name}</span>
-                  <span>{formatRupiah(it.price * it.qty)}</span>
+                  <span className="font-mono">{formatRupiah(it.price * it.qty)}</span>
                 </div>
               ))}
             </div>
             <div className="flex justify-between font-bold text-[#2F5233] pt-2 border-t border-[#E4D9C2]">
               <span>Total</span>
-              <span>{formatRupiah(selectedOrder.total)}</span>
+              <span className="font-mono">{formatRupiah(selectedOrder.total)}</span>
             </div>
             <p className="text-xs text-[#6E5A47]">
               {selectedOrder.payment_method} · {selectedOrder.paid ? "Lunas" : "Belum lunas"} · {selectedOrder.status}
