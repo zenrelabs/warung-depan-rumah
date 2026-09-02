@@ -13,13 +13,27 @@ function isSameMonth(isoString: string, ref: Date) {
   return d.getFullYear() === ref.getFullYear() && d.getMonth() === ref.getMonth();
 }
 
+function isSameDay(isoString: string, ref: Date) {
+  const d = new Date(isoString);
+  return (
+    d.getFullYear() === ref.getFullYear() &&
+    d.getMonth() === ref.getMonth() &&
+    d.getDate() === ref.getDate()
+  );
+}
+
+function daysAgo(n: number) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d;
+}
+
 export default function LaporanPage() {
   const [profile, setProfile] = useState<AdminProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [expKategori, setExpKategori] = useState("");
   const [expNominal, setExpNominal] = useState("");
@@ -61,6 +75,18 @@ export default function LaporanPage() {
   );
   const jumlahTransaksi = paidOrders.length;
 
+  const last7Days = useMemo(() => [6, 5, 4, 3, 2, 1, 0].map((n) => daysAgo(n)), []);
+  const dayRevenue = useMemo(
+    () =>
+      last7Days.map((d) =>
+        paidOrders
+          .filter((o) => isSameDay(o.created_at, d))
+          .reduce((sum, o) => sum + o.total, 0)
+      ),
+    [paidOrders, last7Days]
+  );
+  const maxDayRevenue = Math.max(...dayRevenue, 1);
+  const totalOmset7Hari = dayRevenue.reduce((a, b) => a + b, 0);
   const menuTerlaris = useMemo(() => {
     const counter: Record<string, number> = {};
     paidOrders.forEach((o) => {
@@ -136,6 +162,31 @@ export default function LaporanPage() {
         </div>
       </section>
 
+      {/* SEMUA ROLE: OMSET PER HARI (7 HARI TERAKHIR) */}
+      <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Omset per Hari</h2>
+          <span className="text-xs text-[var(--walnut-soft)]">7 hari terakhir · {formatRupiah(totalOmset7Hari)}</span>
+        </div>
+        <div className="flex items-end justify-between gap-2 h-[140px] pt-2">
+          {dayRevenue.map((v, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
+              <span className="text-[10px] font-mono text-[var(--walnut-soft)]">
+                {v > 0 ? Math.round(v / 1000) + "k" : ""}
+              </span>
+              <div
+                className="w-full rounded-t-md bg-[var(--rust)]"
+                style={{ height: `${Math.max(4, (v / maxDayRevenue) * 100)}px` }}
+                title={formatRupiah(v)}
+              />
+              <span className="text-[10px] font-semibold text-[var(--walnut-soft)] uppercase">
+                {last7Days[i].toLocaleDateString("id-ID", { weekday: "short" })}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* SEMUA ROLE: MENU TERLARIS */}
       <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-3">
         <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Menu Terlaris (Top 5)</h2>
@@ -189,7 +240,6 @@ export default function LaporanPage() {
             </button>
           )}
         </div>
-
         {!isSuper ? (
           <p className="text-sm text-[var(--walnut-soft)]">🔒 khusus Super Admin</p>
         ) : (
@@ -242,7 +292,6 @@ export default function LaporanPage() {
                 </ul>
               )}
             </div>
-
             <div>
               <p className="text-sm font-medium mb-2">
                 Pengeluaran ({expensesThisMonth.length} item) {refreshing && "· memuat ulang..."}
