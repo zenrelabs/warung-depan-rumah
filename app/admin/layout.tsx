@@ -25,6 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [loading, setLoading] = useState(true);
   const [storeOpen, setStoreOpen] = useState(true);
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
+  const [logoUrl, setLogoUrl] = useState("");
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -46,6 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     });
     getSettings().then((s) => {
       setStoreOpen((s.StoreOpen ?? "true").toLowerCase() === "true");
+      setLogoUrl(s.StoreLogoUrl || "");
     });
     refreshPendingCount();
 
@@ -86,12 +88,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* SIDEBAR - DESKTOP */}
       <aside className="hidden md:flex w-60 flex-shrink-0 bg-[var(--white)] border-r border-[var(--line)] p-5 flex-col">
-        <div className="mb-5 pb-5 border-b border-[var(--line)]">
-          <div className="font-display font-semibold text-base text-[var(--forest-dark)] leading-tight">
-            Warung Depan Rumah
+        <div className="mb-5 pb-5 border-b border-[var(--line)] flex items-center gap-3">
+          <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 bg-[var(--forest-tint)] flex items-center justify-center border border-[var(--line)]">
+            {logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={logoUrl} alt="Logo toko" className="w-full h-full object-cover" />
+            ) : (
+              <span className="font-display font-bold text-lg text-[var(--forest-dark)]">W</span>
+            )}
           </div>
-          <div className="text-[11px] tracking-wide uppercase text-[var(--rust)] font-bold">
-            E-Kasir Admin
+          <div>
+            <div className="font-display font-semibold text-base text-[var(--forest-dark)] leading-tight">
+              E-Kasir
+            </div>
+            <div className="text-[11px] tracking-wide text-[var(--walnut-soft)] font-medium">
+              Warung Depan Rumah
+            </div>
           </div>
         </div>
 
