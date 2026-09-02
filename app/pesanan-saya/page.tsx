@@ -41,7 +41,7 @@ export default function MyOrdersPage() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
-      <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">Pesanan Saya</h1>
+      <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">Pesanan Saya</h1>
       <p className="text-sm text-[#6E5A47] mb-6">Riwayat pesanan di perangkat ini</p>
 
       {loading ? (
