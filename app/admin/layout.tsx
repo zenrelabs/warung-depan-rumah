@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { getMyProfile, getSettings } from "@/lib/queries";
+import { getMyProfile, getSettings, getOrders } from "@/lib/queries";
 import type { AdminProfile } from "@/lib/types";
 
 const NAV_ITEMS = [
@@ -24,6 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [profile, setProfile] = useState<AdminProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [storeOpen, setStoreOpen] = useState(true);
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -39,6 +40,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     });
     getSettings().then((s) => {
       setStoreOpen((s.StoreOpen ?? "true").toLowerCase() === "true");
+    });
+    getOrders().then((orders) => {
+      setPendingOrdersCount(orders.filter((o) => o.status === "Diproses").length);
     });
   }, [isLoginPage]);
 
@@ -61,7 +65,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!profile) return null;
 
   const isSuper = profile.role === "super";
-
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[#F6EFE2]">
       {/* SIDEBAR - DESKTOP */}
@@ -94,6 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="flex flex-col gap-1 flex-1">
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.href;
+            const showBadge = item.href === "/admin/orders" && pendingOrdersCount > 0;
             return (
               <Link
                 key={item.href}
@@ -105,7 +109,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 }`}
               >
                 <span className="w-5 text-center">{item.icon}</span>
-                {item.label}
+                <span className="flex-1">{item.label}</span>
+                {showBadge && (
+                  <span
+                    className={`text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 ${
+                      active ? "bg-white/30 text-white" : "bg-[#C1652F] text-white"
+                    }`}
+                  >
+                    {pendingOrdersCount}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -132,6 +145,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <nav className="md:hidden fixed bottom-0 inset-x-0 bg-[#FFFDF8] border-t border-[#E4D9C2] flex justify-around py-2 px-1 z-30">
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.href;
+          const showBadge = item.href === "/admin/orders" && pendingOrdersCount > 0;
           return (
             <Link
               key={item.href}
@@ -140,7 +154,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 active ? "bg-[#DCE3D0] text-[#1F3A23]" : "text-[#6E5A47]"
               }`}
             >
-              <span className="text-base leading-none">{item.icon}</span>
+              <span className="relative">
+                <span className="text-base leading-none">{item.icon}</span>
+                {showBadge && (
+                  <span className="absolute -top-1.5 -right-2.5 bg-[#C1652F] text-white text-[9px] font-bold rounded-full min-w-[15px] h-[15px] flex items-center justify-center px-1 leading-none">
+                    {pendingOrdersCount}
+                  </span>
+                )}
+              </span>
               {item.label}
             </Link>
           );
