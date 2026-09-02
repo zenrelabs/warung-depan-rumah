@@ -93,7 +93,7 @@ export default function AdminPosPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#1F3A23] mb-1">Pesanan Baru</h1>
+        <h1 className="font-display text-2xl font-semibold text-[#1F3A23] mb-1">Pesanan Baru</h1>
         <p className="text-sm text-[#6E5A47]">Pilih menu untuk pelanggan yang sedang memesan</p>
       </div>
 
@@ -134,7 +134,7 @@ export default function AdminPosPage() {
                     key={m.id}
                     className={"bg-white rounded-2xl shadow overflow-hidden flex flex-col " + (soldout ? "opacity-45" : "")}
                   >
-                    <div className="h-24 bg-[#EFD2BC] flex items-center justify-center text-3xl relative overflow-hidden">
+                    <div className="h-24 bg-[#F1DCC7] flex items-center justify-center text-3xl relative overflow-hidden">
                       {m.foto ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={m.foto} alt={m.nama} className="w-full h-full object-cover" />
@@ -151,7 +151,7 @@ export default function AdminPosPage() {
                     </div>
                     <div className="p-3 flex flex-col gap-1.5 flex-1">
                       <span className="text-[10px] uppercase font-bold text-[#C1652F]">{m.kategori}</span>
-                      <div className="text-sm font-semibold text-[#3B2A1E] leading-tight">{m.nama}</div>
+                      <div className="font-display text-sm font-semibold text-[#3B2A1E] leading-tight">{m.nama}</div>
                       <div className="mt-auto flex items-center justify-between pt-1">
                         <span className="font-mono text-sm font-semibold text-[#1F3A23]">{rupiah(m.harga)}</span>
                         {soldout ? (
@@ -192,7 +192,7 @@ export default function AdminPosPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow p-5 sticky top-0">
-          <h3 className="text-base font-semibold text-[#1F3A23] mb-3">Pesanan Saat Ini</h3>
+          <h3 className="font-display text-base font-semibold text-[#1F3A23] mb-3">Pesanan Saat Ini</h3>
 
           {cartLines.length === 0 ? (
             <p className="text-sm text-[#6E5A47] mb-4">Belum ada item dipilih.</p>
