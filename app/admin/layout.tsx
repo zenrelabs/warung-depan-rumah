@@ -67,6 +67,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isSuper = profile.role === "super";
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[var(--cream)]">
+      {/* FLOATING LOGOUT - MOBILE ONLY (desktop pakai tombol logout di sidebar) */}
+      <button
+        onClick={handleLogout}
+        className="md:hidden fixed top-3.5 left-3.5 z-40 flex items-center gap-1.5 bg-[var(--white)] border border-[var(--line)] text-[var(--red)] text-xs font-semibold px-3 py-2 rounded-full shadow-md"
+      >
+        ⎋ Logout
+      </button>
+
       {/* SIDEBAR - DESKTOP */}
       <aside className="hidden md:flex w-60 flex-shrink-0 bg-[var(--white)] border-r border-[var(--line)] p-5 flex-col">
         <div className="mb-5 pb-5 border-b border-[var(--line)]">
