@@ -19,6 +19,18 @@ function fmtDate(d: string) {
   );
 }
 
+function statusStyle(status: string) {
+  switch (status) {
+    case "Selesai":
+      return "bg-[#DDEBDC] text-[#3E7A46]";
+    case "Dibatalkan":
+      return "bg-[#F5DEDC] text-[#B23A34]";
+    case "Diproses":
+    default:
+      return "bg-[#DCE7F1] text-[#2A5C8A]";
+  }
+}
+
 function ReceiptContent() {
   const params = useSearchParams();
   const id = params.get("id");
@@ -77,43 +89,54 @@ function ReceiptContent() {
       `}</style>
 
       <div className="no-print text-center mb-4">
-        <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-bold bg-[#F3E6C4] text-[#B5811E]">
-          Menunggu Diproses
+        <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-bold ${statusStyle(order.status)}`}>
+          {order.status}
         </span>
       </div>
 
-      <div className="bg-white rounded-2xl shadow p-5 mb-4 text-sm">
-        <div className="border-t border-dashed border-[#E4D9C2] my-3" />
-        <div className="flex justify-between mb-1">
-          <span className="text-[#6E5A47]">No. Pesanan</span>
-          <span className="font-mono font-bold">{order.kode_pesanan}</span>
-        </div>
-        <div className="flex justify-between mb-1">
-          <span className="text-[#6E5A47]">Tanggal</span>
-          <span>{fmtDate(order.created_at)}</span>
-        </div>
-        <div className="flex justify-between mb-1">
-          <span className="text-[#6E5A47]">Pelanggan</span>
-          <span>{order.customer_name}</span>
-        </div>
-        <div className="flex justify-between mb-1">
-          <span className="text-[#6E5A47]">Pembayaran</span>
-          <span>{order.payment_method}</span>
-        </div>
-        <div className="border-t border-dashed border-[#E4D9C2] my-3" />
-        {order.items.map((it, i) => (
-          <div key={i} className="flex justify-between mb-1">
-            <span>
-              {it.name} ×{it.qty}
-            </span>
-            <span className="font-mono">{rupiah(it.price * it.qty)}</span>
+      <div className="no-print mb-4">
+        <div className="bg-white rounded-t-2xl shadow-lg p-5 text-sm">
+          <div className="flex justify-between mb-1">
+            <span className="text-[#6E5A47]">No. Pesanan</span>
+            <span className="font-mono font-bold">{order.kode_pesanan}</span>
           </div>
-        ))}
-        <div className="border-t border-dashed border-[#E4D9C2] my-3" />
-        <div className="flex justify-between font-bold text-base font-sans">
-          <span>Total</span>
-          <span className="font-mono text-[#C1652F]">{rupiah(order.total)}</span>
+          <div className="flex justify-between mb-1">
+            <span className="text-[#6E5A47]">Tanggal</span>
+            <span>{fmtDate(order.created_at)}</span>
+          </div>
+          <div className="flex justify-between mb-1">
+            <span className="text-[#6E5A47]">Pelanggan</span>
+            <span>{order.customer_name}</span>
+          </div>
+          <div className="flex justify-between mb-1">
+            <span className="text-[#6E5A47]">Pembayaran</span>
+            <span>{order.payment_method}</span>
+          </div>
+          <div className="border-t border-dashed border-[#E4D9C2] my-3" />
+          {order.items.map((it, i) => (
+            <div key={i} className="flex justify-between mb-1">
+              <span>
+                {it.name} ×{it.qty}
+              </span>
+              <span className="font-mono">{rupiah(it.price * it.qty)}</span>
+            </div>
+          ))}
+          <div className="border-t border-dashed border-[#E4D9C2] my-3" />
+          <div className="flex justify-between font-display font-bold text-base">
+            <span>Total</span>
+            <span className="font-mono text-[#C1652F]">{rupiah(order.total)}</span>
+          </div>
         </div>
+        <div
+          className="h-3 -mt-px"
+          style={{
+            background:
+              "linear-gradient(135deg, transparent 50%, #F6EFE2 50%), linear-gradient(45deg, #F6EFE2 50%, transparent 50%)",
+            backgroundSize: "16px 16px",
+            backgroundRepeat: "repeat-x",
+            backgroundPosition: "left top",
+          }}
+        />
       </div>
 
       <div className="no-print flex gap-3 mb-3">
