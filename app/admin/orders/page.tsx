@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getOrders, updateOrderStatus } from "@/lib/queries";
+import { getOrders, updateOrderStatus, deleteOrder } from "@/lib/queries";
 import type { Order } from "@/lib/types";
 
 function rupiah(n: number) {
@@ -49,6 +49,17 @@ export default function AdminOrdersPage() {
     }
   }
 
+  async function handleDelete(id: number) {
+    if (!confirm("Yakin ingin menghapus pesanan ini? Tindakan ini tidak bisa dibatalkan.")) return;
+    try {
+      await deleteOrder(id);
+      load();
+      window.dispatchEvent(new Event("orders-updated"));
+    } catch (err) {
+      alert("Gagal menghapus pesanan: " + (err as Error).message);
+    }
+  }
+
   function openDetail(order: Order) {
     setDetailOrder(order);
   }
@@ -75,6 +86,7 @@ export default function AdminOrdersPage() {
                 <th className="p-3">Total</th>
                 <th className="p-3">Bayar</th>
                 <th className="p-3">Status</th>
+                <th className="p-3">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -114,6 +126,16 @@ export default function AdminOrdersPage() {
                       <option value="Selesai">Selesai</option>
                       <option value="Dibatalkan">Dibatalkan</option>
                     </select>
+                  </td>
+                  <td className="p-3">
+                    {o.status !== "Selesai" && (
+                      <button
+                        onClick={() => handleDelete(o.id)}
+                        className="text-xs font-medium text-[var(--red)] hover:underline"
+                      >
+                        Hapus
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

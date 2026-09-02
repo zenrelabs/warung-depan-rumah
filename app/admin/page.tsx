@@ -62,33 +62,39 @@ export default function AdminDashboardPage() {
   const recentOrders = useMemo(() => orders.slice(0, 5), [orders]);
 
   const totalRevenue = useMemo(() => {
-    if (!isSuper) return 0;
-    return orders.filter((o) => o.paid).reduce((sum, o) => sum + o.total, 0);
-  }, [orders, isSuper]);
+    return orders.filter((o) => o.paid && o.status !== "Dibatalkan").reduce((sum, o) => sum + o.total, 0);
+  }, [orders]);
 
   const trend7Days = useMemo(() => {
-    if (!isSuper) return [];
     const days: { label: string; date: Date; total: number }[] = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(today.getDate() - i);
       const total = orders
-        .filter((o) => o.paid && isSameLocalDay(o.created_at, d))
+        .filter((o) => o.paid && o.status !== "Dibatalkan" && isSameLocalDay(o.created_at, d))
         .reduce((sum, o) => sum + o.total, 0);
       days.push({ label: DAY_LABELS[d.getDay()], date: d, total });
     }
     return days;
-  }, [orders, isSuper, today]);
+  }, [orders, today]);
+
+  const omsetHariIni = useMemo(() => {
+    if (trend7Days.length === 0) return 0;
+    return trend7Days[trend7Days.length - 1].total;
+  }, [trend7Days]);
+
+  const omset7Hari = useMemo(() => {
+    return trend7Days.reduce((sum, d) => sum + d.total, 0);
+  }, [trend7Days]);
 
   const maxTrendValue = useMemo(
     () => Math.max(1, ...trend7Days.map((d) => d.total)),
     [trend7Days]
   );
 
-  const menuTerlaris = useMemo(
-    () => (isSuper ? menu.filter((m) => m.rekomendasi) : []),
-    [menu, isSuper]
-  );
+  const menuTerlaris = useMemo(() => {
+    return isSuper ? menu.filter((m) => m.rekomendasi) : [];
+  }, [menu, isSuper]);
 
   if (loading) {
     return <div className="p-6 text-[var(--walnut)]">Memuat dashboard...</div>;
@@ -114,36 +120,40 @@ export default function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* KHUSUS SUPER: REVENUE & TREN */}
+      {/* OMSET & TREN - SEMUA ROLE */}
       <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-4">
         <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Omset</h2>
-        {!isSuper ? (
-          <p className="text-sm text-[var(--walnut-soft)]">🔒 khusus Super Admin</p>
-        ) : (
-          <>
-            <div>
-              <p className="text-xs text-[var(--walnut-soft)] mb-1">Total Revenue (semua waktu)</p>
-              <p className="text-3xl font-bold font-mono text-[var(--forest)]">{formatRupiah(totalRevenue)}</p>
-            </div>
-            <div>
-              <p className="text-xs text-[var(--walnut-soft)] mb-2">Tren Omset 7 Hari Terakhir</p>
-              <div className="flex items-end gap-2 h-32">
-                {trend7Days.map((d, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <div
-                      className="w-full bg-[var(--forest)] rounded-t-md min-h-[2px]"
-                      style={{
-                        height: `${Math.max(4, (d.total / maxTrendValue) * 100)}px`,
-                      }}
-                      title={formatRupiah(d.total)}
-                    />
-                    <span className="text-[10px] text-[var(--walnut-soft)]">{d.label}</span>
-                  </div>
-                ))}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="rounded-lg bg-[var(--cream)] p-3">
+            <p className="text-xs text-[var(--walnut-soft)] mb-1">Hari Ini</p>
+            <p className="text-xl font-bold font-mono text-[var(--forest)]">{formatRupiah(omsetHariIni)}</p>
+          </div>
+          <div className="rounded-lg bg-[var(--cream)] p-3">
+            <p className="text-xs text-[var(--walnut-soft)] mb-1">7 Hari Terakhir</p>
+            <p className="text-xl font-bold font-mono text-[var(--rust)]">{formatRupiah(omset7Hari)}</p>
+          </div>
+          <div className="rounded-lg bg-[var(--cream)] p-3">
+            <p className="text-xs text-[var(--walnut-soft)] mb-1">Semua Waktu</p>
+            <p className="text-xl font-bold font-mono text-[var(--walnut)]">{formatRupiah(totalRevenue)}</p>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs text-[var(--walnut-soft)] mb-2">Tren Omset 7 Hari Terakhir</p>
+          <div className="flex items-end gap-2 h-32">
+            {trend7Days.map((d, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                <div
+                  className="w-full bg-[var(--forest)] rounded-t-md min-h-[2px]"
+                  style={{
+                    height: `${Math.max(4, (d.total / maxTrendValue) * 100)}px`,
+                  }}
+                  title={formatRupiah(d.total)}
+                />
+                <span className="text-[10px] text-[var(--walnut-soft)]">{d.label}</span>
               </div>
-            </div>
-          </>
-        )}
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* KHUSUS SUPER: MENU TERLARIS */}

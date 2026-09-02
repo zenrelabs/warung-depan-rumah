@@ -449,3 +449,9 @@ export async function getMyProfile(): Promise<AdminProfile | null> {
   if (error) return null;
   return data as AdminProfile;
 }
+
+export async function deleteOrder(id: number) {
+  const supabase = createBrowserClient();
+  const { error } = await supabase.from("orders").delete().eq("id", id);
+  if (error) throw error;
+}
