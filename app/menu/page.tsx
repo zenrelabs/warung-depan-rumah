@@ -38,8 +38,8 @@ export default function CustomerMenuPage() {
     setCartState(getCart());
   }, []);
 
-  const storeOpen = String(settings.StoreOpen) === "TRUE";
-  const allowOutside = String(settings.AllowOrderOutsideHours) !== "FALSE";
+  const storeOpen = (settings.StoreOpen ?? "true").toLowerCase() === "true";
+  const allowOutside = (settings.AllowOrderOutsideHours ?? "true").toLowerCase() !== "false";
   const canOrder = storeOpen || allowOutside;
 
   const categories = [
@@ -73,7 +73,7 @@ export default function CustomerMenuPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
       {!storeOpen && !allowOutside && (
-        <div className="mb-4 text-sm bg-red-50 text-red-600 border border-red-200 rounded-lg px-4 py-2.5 font-semibold">
+        <div className="mb-4 text-sm bg-[#F5DEDC] text-[#B23A34] border border-[#B23A34]/30 rounded-lg px-4 py-2.5 font-semibold">
           ● Warung sedang tutup. Pesanan baru belum bisa diproses saat ini.
         </div>
       )}
@@ -119,7 +119,7 @@ export default function CustomerMenuPage() {
                 key={m.id}
                 className={"bg-white rounded-2xl shadow overflow-hidden flex flex-col " + (soldout ? "opacity-50" : "")}
               >
-                <div className="h-28 bg-[#EFD2BC] flex items-center justify-center text-3xl relative overflow-hidden">
+                <div className="h-28 bg-[#F1DCC7] flex items-center justify-center text-3xl relative overflow-hidden">
                   {m.rekomendasi && (
                     <span className="absolute top-2 left-2 bg-[#C1652F] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
                       Terlaris
@@ -142,7 +142,7 @@ export default function CustomerMenuPage() {
 
                 <div className="p-3 flex flex-col gap-1 flex-1">
                   <span className="text-[10px] uppercase font-bold text-[#C1652F]">{m.kategori}</span>
-                  <div className="text-sm font-semibold leading-tight">{m.nama}</div>
+                  <div className="font-display text-sm font-semibold leading-tight">{m.nama}</div>
                   <div className="text-xs text-[#6E5A47] flex-1">{m.deskripsi}</div>
                   <div className="mt-2 flex items-center justify-between pt-1">
                     <span className="font-mono text-sm font-semibold text-[#1F3A23]">{rupiah(m.harga)}</span>
@@ -215,7 +215,7 @@ export default function CustomerMenuPage() {
               ) : (
                 cartLines.map((c) => (
                   <div key={c.id} className="flex gap-3 py-3 border-b border-[#E4D9C2]">
-                    <div className="w-11 h-11 rounded-lg bg-[#EFD2BC] flex items-center justify-center overflow-hidden text-lg flex-shrink-0">
+                    <div className="w-11 h-11 rounded-lg bg-[#F1DCC7] flex items-center justify-center overflow-hidden text-lg flex-shrink-0">
                       {c.m.foto ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={c.m.foto} alt="" className="w-full h-full object-cover" />
@@ -224,7 +224,7 @@ export default function CustomerMenuPage() {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-bold">{c.m.nama}</div>
+                      <div className="font-display text-sm font-bold">{c.m.nama}</div>
                       <div className="font-mono text-xs text-[#6E5A47]">{rupiah(c.m.harga)}</div>
                     </div>
                     <div className="flex items-center gap-2 bg-[#DCE3D0] rounded-full px-1.5 py-1 h-fit">
