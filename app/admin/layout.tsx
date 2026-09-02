@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { getMyProfile } from "@/lib/queries";
+import { getMyProfile, getSettings } from "@/lib/queries";
 import type { AdminProfile } from "@/lib/types";
 
 const NAV_ITEMS = [
@@ -23,6 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const [profile, setProfile] = useState<AdminProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [storeOpen, setStoreOpen] = useState(true);
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -35,6 +36,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setProfile(p);
       setLoading(false);
       if (!p) router.push("/admin/login");
+    });
+    getSettings().then((s) => {
+      setStoreOpen((s.StoreOpen ?? "true").toLowerCase() === "true");
     });
   }, [isLoginPage]);
 
@@ -70,6 +74,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             E-Kasir Admin
           </div>
         </div>
+
+        <span
+          className={`text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full w-fit mb-2 ${
+            storeOpen ? "bg-[#DDEBDC] text-[#3E7A46]" : "bg-[#F5DEDC] text-[#B23A34]"
+          }`}
+        >
+          {storeOpen ? "● Buka" : "● Tutup"}
+        </span>
 
         <span
           className={`text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full w-fit mb-4 ${

@@ -58,7 +58,7 @@ export default function PengaturanPage() {
       setIg(settings.StoreIG || "");
       setLogoUrl(settings.StoreLogoUrl || "");
       setThemeColor(settings.ThemeColor || "hijau");
-      setStoreOpen((settings.StoreOpen ?? "true") === "true");
+      setStoreOpen((settings.StoreOpen ?? "true").toLowerCase() === "true");
       setAllowOutside((settings.AllowOrderOutsideHours ?? "false") === "true");
 
       if (prof?.role === "super") {
