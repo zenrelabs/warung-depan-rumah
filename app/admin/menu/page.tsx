@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getMenu, saveMenuItem, deleteMenuItem, seedDefaultMenu, getMyProfile } from "@/lib/queries";
+import { getMenu, saveMenuItem, deleteMenuItem, getMyProfile } from "@/lib/queries";
 import { uploadImage } from "@/lib/storage";
 import type { MenuItem, AdminProfile } from "@/lib/types";
 
@@ -51,7 +51,6 @@ export default function AdminMenuPage() {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
   const [saving, setSaving] = useState(false);
-  const [seeding, setSeeding] = useState(false);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isSuper = profile?.role === "super";
@@ -156,24 +155,6 @@ export default function AdminMenuPage() {
     }
   }
 
-  async function handleSeedDefault() {
-    if (!confirm("Masukkan seluruh menu bawaan (Healthy Food, Roti Maryam, Camilan, Minuman) ke database?")) return;
-    setSeeding(true);
-    try {
-      const count = await seedDefaultMenu();
-      if (count > 0) {
-        alert(`Berhasil menambahkan ${count} menu baru!`);
-      } else {
-        alert("Semua menu default sudah ada di database.");
-      }
-      load();
-    } catch (err) {
-      alert("Gagal menambahkan menu default: " + (err as Error).message);
-    } finally {
-      setSeeding(false);
-    }
-  }
-
   return (
     <div>
       <div className="flex justify-between items-start mb-6">
@@ -182,13 +163,6 @@ export default function AdminMenuPage() {
           <p className="text-sm text-[var(--walnut-soft)]">Tambah, ubah, atau tandai status menu</p>
         </div>
         <div className="flex gap-2">
-          <button
-            onClick={handleSeedDefault}
-            disabled={seeding}
-            className="bg-[var(--forest)] text-white font-semibold text-sm rounded-lg px-4 py-2 disabled:opacity-50"
-          >
-            {seeding ? "Memproses..." : "📥 Masukkan Menu Default"}
-          </button>
           <button
             onClick={openAdd}
             className="bg-[var(--rust)] text-white font-semibold text-sm rounded-lg px-4 py-2"
