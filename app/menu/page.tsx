@@ -83,7 +83,7 @@ export default function CustomerMenuPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cari menu..."
-          className="w-full rounded-full border border-[var(--line)] px-4 py-2.5 pl-10 text-sm bg-white"
+          className="w-full rounded-full border border-[var(--line)] px-4 py-2.5 pl-10 text-sm bg-[var(--white)]"
         />
         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--walnut-soft)]">🔍</span>
       </div>
@@ -97,7 +97,7 @@ export default function CustomerMenuPage() {
               "px-4 py-2 rounded-full text-xs font-bold border " +
               (category === c
                 ? "bg-[var(--forest)] border-[var(--forest)] text-white"
-                : "bg-white border-[var(--line)] text-[var(--walnut-soft)]")
+                : "bg-[var(--white)] border-[var(--line)] text-[var(--walnut-soft)]")
             }
           >
             {c}
@@ -117,7 +117,7 @@ export default function CustomerMenuPage() {
             return (
               <div
                 key={m.id}
-                className={"bg-white rounded-2xl shadow overflow-hidden flex flex-col " + (soldout ? "opacity-50" : "")}
+                className={"bg-[var(--white)] rounded-2xl shadow overflow-hidden flex flex-col " + (soldout ? "opacity-50" : "")}
               >
                 <div className="h-28 bg-[var(--rust-tint)] flex items-center justify-center text-3xl relative overflow-hidden">
                   {m.rekomendasi && (
@@ -198,7 +198,7 @@ export default function CustomerMenuPage() {
             if (e.target === e.currentTarget) setDrawerOpen(false);
           }}
         >
-          <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white flex flex-col">
+          <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-[var(--white)] flex flex-col">
             <div className="flex justify-between items-center px-5 py-4 border-b border-[var(--line)]">
               <h3 className="font-semibold text-[var(--forest-dark)]">Keranjang</h3>
               <button onClick={() => setDrawerOpen(false)} className="text-[var(--walnut-soft)]">

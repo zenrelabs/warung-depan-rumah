@@ -192,7 +192,7 @@ export default function AdminMenuPage() {
       {loading ? (
         <p className="text-sm text-[var(--walnut-soft)]">Memuat...</p>
       ) : (
-        <div className="bg-white rounded-2xl shadow overflow-x-auto">
+        <div className="bg-[var(--white)] rounded-2xl shadow overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs uppercase text-[var(--walnut-soft)] border-b border-[var(--line)]">

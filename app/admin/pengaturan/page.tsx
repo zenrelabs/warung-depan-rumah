@@ -222,7 +222,7 @@ export default function PengaturanPage() {
               type="text"
               value={namaToko}
               onChange={(e) => setNamaToko(e.target.value)}
-              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -231,7 +231,7 @@ export default function PengaturanPage() {
               type="text"
               value={alamat}
               onChange={(e) => setAlamat(e.target.value)}
-              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -241,7 +241,7 @@ export default function PengaturanPage() {
               value={wa}
               onChange={(e) => setWa(e.target.value)}
               placeholder="cth: 6282315271827"
-              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -251,7 +251,7 @@ export default function PengaturanPage() {
               value={ig}
               onChange={(e) => setIg(e.target.value)}
               placeholder="cth: depan.rumah18"
-              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
             />
           </div>
         </div>
@@ -276,7 +276,7 @@ export default function PengaturanPage() {
               className={`flex items-center gap-2 rounded-full border px-3 py-2 text-sm ${
                 themeColor === preset.value
                   ? "border-[var(--forest)] bg-[var(--forest-tint)]"
-                  : "border-[var(--line)] bg-white"
+                  : "border-[var(--line)] bg-[var(--white)]"
               }`}
             >
               <span

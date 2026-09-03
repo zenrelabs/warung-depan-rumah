@@ -95,7 +95,7 @@ function ReceiptContent() {
       </div>
 
       <div className="no-print mb-4">
-        <div className="bg-white rounded-t-2xl shadow-lg p-5 text-sm">
+        <div className="bg-[var(--white)] rounded-t-2xl shadow-lg p-5 text-sm">
           <div className="flex justify-between mb-1">
             <span className="text-[var(--walnut-soft)]">No. Pesanan</span>
             <span className="font-mono font-bold">{order.kode_pesanan}</span>
@@ -142,7 +142,7 @@ function ReceiptContent() {
       <div className="no-print flex gap-3 mb-3">
         <Link
           href="/pesanan-saya"
-          className="flex-1 text-center border border-[var(--line)] rounded-lg py-2.5 text-sm font-semibold bg-white"
+          className="flex-1 text-center border border-[var(--line)] rounded-lg py-2.5 text-sm font-semibold bg-[var(--white)]"
         >
           Lihat Pesanan Saya
         </Link>
@@ -156,7 +156,7 @@ function ReceiptContent() {
 
       <button
         onClick={() => window.print()}
-        className="no-print w-full text-center border border-[var(--forest)] text-[var(--forest)] rounded-lg py-2.5 text-sm font-semibold bg-white hover:bg-[var(--forest-tint)]"
+        className="no-print w-full text-center border border-[var(--forest)] text-[var(--forest)] rounded-lg py-2.5 text-sm font-semibold bg-[var(--white)] hover:bg-[var(--forest-tint)]"
       >
         🖨️ Cetak Struk
       </button>

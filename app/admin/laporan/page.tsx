@@ -346,21 +346,21 @@ export default function LaporanPage() {
                   placeholder="Kategori (mis: Belanja Bahan)"
                   value={expKategori}
                   onChange={(e) => setExpKategori(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
                 />
                 <input
                   type="number"
                   placeholder="Nominal"
                   value={expNominal}
                   onChange={(e) => setExpNominal(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Keterangan (opsional)"
                   value={expKeterangan}
                   onChange={(e) => setExpKeterangan(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
                 />
                 <button
                   onClick={handleAddExpense}
@@ -414,7 +414,7 @@ export default function LaporanPage() {
             <select
               value={selectedMonth.toISOString()}
               onChange={(e) => setSelectedMonth(new Date(e.target.value))}
-              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm font-medium"
+              className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm font-medium"
             >
               {monthOptions.map((m) => (
                 <option key={m.toISOString()} value={m.toISOString()}>

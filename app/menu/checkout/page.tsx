@@ -83,7 +83,7 @@ export default function CheckoutPage() {
       <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">Checkout</h1>
       <p className="text-sm text-[var(--walnut-soft)] mb-6">Lengkapi data pesanan sebelum dikirim</p>
 
-      <div className="bg-white rounded-2xl shadow p-5 mb-4">
+      <div className="bg-[var(--white)] rounded-2xl shadow p-5 mb-4">
         <div className="mb-3">
           <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">Nama Pelanggan</label>
           <input
@@ -140,7 +140,7 @@ export default function CheckoutPage() {
         )}
       </div>
 
-      <div className="bg-white rounded-2xl shadow p-5 mb-4">
+      <div className="bg-[var(--white)] rounded-2xl shadow p-5 mb-4">
         <h3 className="font-display text-sm font-semibold mb-3">Ringkasan Pesanan</h3>
         {cartLines.map((c) => (
           <div key={c.id} className="flex justify-between text-sm py-1.5 border-b border-dotted border-[var(--line)]">

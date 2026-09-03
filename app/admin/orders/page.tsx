@@ -76,7 +76,7 @@ export default function AdminOrdersPage() {
       ) : orders.length === 0 ? (
         <p className="text-sm text-[var(--walnut-soft)]">Belum ada pesanan.</p>
       ) : (
-        <div className="bg-white rounded-2xl shadow overflow-x-auto">
+        <div className="bg-[var(--white)] rounded-2xl shadow overflow-x-auto">
           <table className="w-full text-sm min-w-[720px]">
             <thead>
               <tr className="text-left text-xs uppercase text-[var(--walnut-soft)] border-b border-[var(--line)]">
@@ -152,7 +152,7 @@ export default function AdminOrdersPage() {
           }}
         >
           <div className="min-h-full flex items-start justify-center p-5">
-            <div className="bg-white rounded-2xl p-6 w-full max-w-md my-10">
+            <div className="bg-[var(--white)] rounded-2xl p-6 w-full max-w-md my-10">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-display text-lg font-semibold text-[var(--forest-dark)]">Struk Pesanan</h3>
                 <button onClick={() => setDetailOrder(null)} className="text-[var(--walnut-soft)]">

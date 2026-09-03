@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--cream)] px-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8">
+      <div className="w-full max-w-sm bg-[var(--white)] rounded-2xl shadow-lg p-8">
         <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">
           Masuk sebagai Admin
         </h1>

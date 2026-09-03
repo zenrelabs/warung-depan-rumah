@@ -113,7 +113,7 @@ export default function AdminPosPage() {
                   "px-4 py-2 rounded-full text-xs font-bold border " +
                   (category === c
                     ? "bg-[var(--forest)] border-[var(--forest)] text-white"
-                    : "bg-white border-[var(--line)] text-[var(--walnut-soft)]")
+                    : "bg-[var(--white)] border-[var(--line)] text-[var(--walnut-soft)]")
                 }
               >
                 {c}
@@ -131,7 +131,7 @@ export default function AdminPosPage() {
                 return (
                   <div
                     key={m.id}
-                    className={"bg-white rounded-2xl shadow overflow-hidden flex flex-col " + (soldout ? "opacity-45" : "")}
+                    className={"bg-[var(--white)] rounded-2xl shadow overflow-hidden flex flex-col " + (soldout ? "opacity-45" : "")}
                   >
                     <div className="h-24 bg-[var(--rust-tint)] flex items-center justify-center text-3xl relative overflow-hidden">
                       {m.foto ? (
@@ -190,7 +190,7 @@ export default function AdminPosPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-2xl shadow p-5 sticky top-0">
+        <div className="bg-[var(--white)] rounded-2xl shadow p-5 sticky top-0">
           <h3 className="font-display text-base font-semibold text-[var(--forest-dark)] mb-3">Pesanan Saat Ini</h3>
 
           {cartLines.length === 0 ? (
@@ -241,7 +241,7 @@ export default function AdminPosPage() {
                   "px-3 py-1.5 rounded-full text-xs font-bold border " +
                   (payment === p
                     ? "bg-[var(--forest)] border-[var(--forest)] text-white"
-                    : "bg-white border-[var(--line)] text-[var(--walnut-soft)]")
+                    : "bg-[var(--white)] border-[var(--line)] text-[var(--walnut-soft)]")
                 }
               >
                 {p}

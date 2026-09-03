@@ -53,7 +53,7 @@ export default function MyOrdersPage() {
         </div>
       ) : (
         orders.map((o) => (
-          <div key={o.id} className="bg-white rounded-2xl shadow p-4 mb-3">
+          <div key={o.id} className="bg-[var(--white)] rounded-2xl shadow p-4 mb-3">
             <div className="flex justify-between items-center mb-2">
               <span className="font-mono font-semibold text-sm">{o.kode_pesanan}</span>
               <span className={"text-xs font-bold px-2.5 py-1 rounded-full " + badgeClass(o.status)}>
