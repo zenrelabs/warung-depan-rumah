@@ -66,8 +66,8 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">Riwayat Pesanan</h1>
+      <div className="mb-8">
+        <h1 className="font-display text-3xl font-bold text-[var(--forest-dark)] tracking-tight mb-2">Riwayat Pesanan</h1>
         <p className="text-sm text-[var(--walnut-soft)]">Semua transaksi yang tercatat</p>
       </div>
 

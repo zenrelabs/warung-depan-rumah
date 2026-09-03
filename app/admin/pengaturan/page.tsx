@@ -178,7 +178,7 @@ export default function PengaturanPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-4 md:p-6 space-y-8 text-[var(--walnut)]">
-      <h1 className="font-display text-2xl font-bold text-[var(--forest)]">Pengaturan</h1>
+      <h1 className="font-display text-3xl font-bold text-[var(--forest-dark)] tracking-tight">Pengaturan</h1>
 
       {message && (
         <div className="rounded-lg border border-[var(--forest-tint)] bg-[var(--cream)] px-4 py-3 text-sm">

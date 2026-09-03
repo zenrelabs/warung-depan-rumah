@@ -91,8 +91,8 @@ export default function AdminPosPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-semibold text-[var(--forest-dark)] mb-1">Pesanan Baru</h1>
+      <div className="mb-8">
+        <h1 className="font-display text-3xl font-bold text-[var(--forest-dark)] tracking-tight mb-2">Pesanan Baru</h1>
         <p className="text-sm text-[var(--walnut-soft)]">Pilih menu untuk pelanggan yang sedang memesan</p>
       </div>
 

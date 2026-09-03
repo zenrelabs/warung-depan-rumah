@@ -105,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {isSuper ? "Super Admin" : "Admin"}
         </span>
 
-        <nav className="flex flex-col gap-1 flex-1">
+        <nav className="flex flex-col gap-2 flex-1">
           {navItems.map((item) => {
             const active = pathname === item.href;
             const showBadge = item.href === "/admin/orders" && pendingOrdersCount > 0;
