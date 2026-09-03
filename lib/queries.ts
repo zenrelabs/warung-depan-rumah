@@ -356,13 +356,27 @@ export async function createOrder(payload: CreateOrderPayload): Promise<Order> {
   const supabase = createBrowserClient();
   const total = payload.items.reduce((s, it) => s + it.price * it.qty, 0);
 
+  const ids = payload.items.map((it) => it.id);
+  const { data: menuRows } = await supabase
+    .from("menu")
+    .select("id, harga_modal")
+    .in("id", ids);
+  const modalMap: Record<number, number | null> = {};
+  (menuRows || []).forEach((m) => {
+    modalMap[m.id] = m.harga_modal ?? null;
+  });
+  const itemsWithModal = payload.items.map((it) => ({
+    ...it,
+    modal: modalMap[it.id] ?? null,
+  }));
+
   const { data, error } = await supabase
     .from("orders")
     .insert({
       customer_name: payload.customerName || "Pelanggan",
       phone: payload.phone || null,
       note: payload.note || null,
-      items: payload.items,
+      items: itemsWithModal,
       total,
       payment_method: payload.payment,
       paid: false,
@@ -397,9 +411,43 @@ async function decrementStockForItems(items: { id: number; qty: number }[]) {
 
 export async function updateOrderStatus(id: number, status: Order["status"]) {
   const supabase = createBrowserClient();
+  const { data: existing, error: fetchError } = await supabase
+    .from("orders")
+    .select("status, items")
+    .eq("id", id)
+    .single();
+  if (fetchError) throw fetchError;
+
+  const wasCancelled = existing.status === "Dibatalkan";
+  const willBeCancelled = status === "Dibatalkan";
+
   const updates: Partial<Order> = { status, paid: status === "Selesai" };
   const { error } = await supabase.from("orders").update(updates).eq("id", id);
   if (error) throw error;
+
+  if (!wasCancelled && willBeCancelled) {
+    await restoreStockForItems(existing.items);
+  } else if (wasCancelled && !willBeCancelled) {
+    await decrementStockForItems(existing.items);
+  }
+}
+
+async function restoreStockForItems(items: { id: number; qty: number }[]) {
+  const supabase = createBrowserClient();
+  for (const it of items) {
+    const { data: menuRow } = await supabase
+      .from("menu")
+      .select("stok, status")
+      .eq("id", it.id)
+      .single();
+    if (!menuRow || menuRow.stok === null) continue;
+    const newStok = Number(menuRow.stok) + it.qty;
+    const updates: Partial<MenuItem> = { stok: newStok };
+    if (newStok > 0 && menuRow.status === "habis") {
+      updates.status = "tersedia";
+    }
+    await supabase.from("menu").update(updates).eq("id", it.id);
+  }
 }
 
 /* ============ KEUANGAN ============ */

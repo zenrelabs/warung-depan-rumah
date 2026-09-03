@@ -18,6 +18,7 @@ export type OrderItem = {
   name: string;
   qty: number;
   price: number;
+  modal?: number | null;
 };
 
 export type Order = {

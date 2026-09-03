@@ -101,7 +101,12 @@ export default function LaporanPage() {
 
   function hitungHPP(list: Order[]) {
     return list.reduce(
-      (sum, o) => sum + o.items.reduce((s, it) => s + it.qty * (modalMap[it.id] ?? 0), 0),
+      (sum, o) =>
+        sum +
+        o.items.reduce(
+          (s, it) => s + it.qty * (it.modal ?? modalMap[it.id] ?? 0),
+          0
+        ),
       0
     );
   }
@@ -110,7 +115,8 @@ export default function LaporanPage() {
     const names = new Set<string>();
     list.forEach((o) =>
       o.items.forEach((it) => {
-        if (missingModalIds.has(it.id)) names.add(it.name);
+        const hasSnapshot = it.modal !== null && it.modal !== undefined;
+        if (!hasSnapshot && missingModalIds.has(it.id)) names.add(it.name);
       })
     );
     return Array.from(names);
@@ -413,13 +419,20 @@ export default function LaporanPage() {
 
             {showAddExpense && (
               <div className="space-y-2 rounded-lg border border-[var(--line)] bg-[var(--cream)] p-3">
-                <input
-                  type="text"
-                  placeholder="Kategori (mis: Belanja Bahan)"
+                <select
                   value={expKategori}
                   onChange={(e) => setExpKategori(e.target.value)}
                   className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
-                />
+                >
+                  <option value="">Pilih kategori</option>
+                  <option value="Bahan Baku/Restock">Bahan Baku/Restock</option>
+                  <option value="Utilitas">Utilitas (listrik, air, internet)</option>
+                  <option value="Operasional">Operasional</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="SDM">SDM</option>
+                  <option value="Gaji">Gaji</option>
+                  <option value="Lain-lain">Lain-lain</option>
+                </select>
                 <input
                   type="number"
                   placeholder="Nominal"
