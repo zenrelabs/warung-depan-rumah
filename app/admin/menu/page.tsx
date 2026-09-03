@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getMenu, saveMenuItem, deleteMenuItem, seedDefaultMenu } from "@/lib/queries";
+import { getMenu, saveMenuItem, deleteMenuItem, seedDefaultMenu, getMyProfile } from "@/lib/queries";
 import { uploadImage } from "@/lib/storage";
-import type { MenuItem } from "@/lib/types";
+import type { MenuItem, AdminProfile } from "@/lib/types";
 
 const CAT_ICON: Record<string, string> = {
   "Roti Maryam": "🫓",
@@ -22,6 +22,7 @@ type FormState = {
   nama: string;
   kategori: string;
   harga: string;
+  hargaModal: string;
   deskripsi: string;
   status: MenuItem["status"];
   rekomendasi: boolean;
@@ -33,6 +34,7 @@ const emptyForm: FormState = {
   nama: "",
   kategori: "",
   harga: "",
+  hargaModal: "",
   deskripsi: "",
   status: "tersedia",
   rekomendasi: false,
@@ -42,6 +44,7 @@ const emptyForm: FormState = {
 
 export default function AdminMenuPage() {
   const [menu, setMenu] = useState<MenuItem[]>([]);
+  const [profile, setProfile] = useState<AdminProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -51,6 +54,7 @@ export default function AdminMenuPage() {
   const [seeding, setSeeding] = useState(false);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const isSuper = profile?.role === "super";
 
   function load() {
     setLoading(true);
@@ -61,6 +65,7 @@ export default function AdminMenuPage() {
 
   useEffect(() => {
     load();
+    getMyProfile().then(setProfile);
   }, []);
 
   useEffect(() => {
@@ -88,6 +93,7 @@ export default function AdminMenuPage() {
       nama: m.nama,
       kategori: m.kategori || "",
       harga: String(m.harga),
+      hargaModal: m.harga_modal === null || m.harga_modal === undefined ? "" : String(m.harga_modal),
       deskripsi: m.deskripsi || "",
       status: m.status,
       rekomendasi: m.rekomendasi,
@@ -122,6 +128,9 @@ export default function AdminMenuPage() {
         nama: form.nama.trim(),
         kategori: form.kategori.trim(),
         harga: Number(form.harga) || 0,
+        harga_modal: isSuper
+          ? (form.hargaModal.trim() === "" ? null : Number(form.hargaModal))
+          : undefined,
         deskripsi: form.deskripsi.trim(),
         status: form.status,
         rekomendasi: form.rekomendasi,
@@ -200,6 +209,7 @@ export default function AdminMenuPage() {
                 <th className="p-3">Nama</th>
                 <th className="p-3">Kategori</th>
                 <th className="p-3">Harga</th>
+                {isSuper && <th className="p-3">Modal</th>}
                 <th className="p-3">Stok</th>
                 <th className="p-3">Status</th>
                 <th className="p-3">Rekomendasi</th>
@@ -225,6 +235,11 @@ export default function AdminMenuPage() {
                   </td>
                   <td className="p-3">{m.kategori}</td>
                   <td className="p-3 font-mono">{rupiah(m.harga)}</td>
+                  {isSuper && (
+                    <td className="p-3 font-mono text-[var(--walnut-soft)]">
+                      {m.harga_modal === null || m.harga_modal === undefined ? "—" : rupiah(m.harga_modal)}
+                    </td>
+                  )}
                   <td className="p-3 font-mono">{m.stok === null ? "—" : m.stok}</td>
                   <td className="p-3">
                     <span
@@ -319,6 +334,21 @@ export default function AdminMenuPage() {
               />
             </div>
           </div>
+
+          {isSuper && (
+            <div className="mb-3">
+              <label className="block text-xs font-bold text-[var(--walnut-soft)] mb-1">
+                Harga Modal (Rp) — khusus Super Admin, dipakai untuk hitung laba di Laporan
+              </label>
+              <input
+                type="number"
+                value={form.hargaModal}
+                onChange={(e) => setForm({ ...form, hargaModal: e.target.value })}
+                placeholder="Kosongkan kalau belum tahu"
+                className="w-full rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
+              />
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div>

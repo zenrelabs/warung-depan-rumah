@@ -2,11 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { getMyProfile, getOrders, getExpenses, addExpense } from "@/lib/queries";
-import type { AdminProfile, Order, Expense } from "@/lib/types";
+import { getMyProfile, getOrders, getExpenses, addExpense, getMenu } from "@/lib/queries";
+import type { AdminProfile, Order, Expense, MenuItem } from "@/lib/types";
 
 function formatRupiah(n: number) {
-  return "Rp " + n.toLocaleString("id-ID");
+  return "Rp " + Math.round(n).toLocaleString("id-ID");
+}
+
+function formatPercent(n: number) {
+  if (!Number.isFinite(n)) return "0%";
+  return n.toFixed(1) + "%";
 }
 
 function isSameMonth(isoString: string, ref: Date) {
@@ -39,6 +44,7 @@ export default function LaporanPage() {
   const [profile, setProfile] = useState<AdminProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [menu, setMenu] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [showAddExpense, setShowAddExpense] = useState(false);
@@ -52,6 +58,7 @@ export default function LaporanPage() {
   const [selectedMonth, setSelectedMonth] = useState<Date>(
     new Date(now.getFullYear(), now.getMonth(), 1)
   );
+
   const isSuper = profile?.role === "super";
 
   async function loadAll() {
@@ -60,6 +67,9 @@ export default function LaporanPage() {
 
     const allOrders = await getOrders();
     setOrders(allOrders);
+
+    const menuList = await getMenu();
+    setMenu(menuList);
 
     if (prof?.role === "super") {
       const expList = await getExpenses();
@@ -75,6 +85,36 @@ export default function LaporanPage() {
     }
     init();
   }, []);
+
+  const modalMap = useMemo(() => {
+    const map: Record<number, number> = {};
+    menu.forEach((m) => {
+      map[m.id] = m.harga_modal ?? 0;
+    });
+    return map;
+  }, [menu]);
+
+  const missingModalIds = useMemo(
+    () => new Set(menu.filter((m) => m.harga_modal === null || m.harga_modal === undefined).map((m) => m.id)),
+    [menu]
+  );
+
+  function hitungHPP(list: Order[]) {
+    return list.reduce(
+      (sum, o) => sum + o.items.reduce((s, it) => s + it.qty * (modalMap[it.id] ?? 0), 0),
+      0
+    );
+  }
+
+  function produkModalBelumDiisi(list: Order[]) {
+    const names = new Set<string>();
+    list.forEach((o) =>
+      o.items.forEach((it) => {
+        if (missingModalIds.has(it.id)) names.add(it.name);
+      })
+    );
+    return Array.from(names);
+  }
 
   const paidOrders = useMemo(
     () => orders.filter((o) => o.paid && o.status !== "Dibatalkan"),
@@ -118,6 +158,9 @@ export default function LaporanPage() {
     () => paidOrdersThisMonth.reduce((sum, o) => sum + o.total, 0),
     [paidOrdersThisMonth]
   );
+  const hppBulanIni = useMemo(() => hitungHPP(paidOrdersThisMonth), [paidOrdersThisMonth, modalMap]);
+  const labaKotorBulanIni = omsetBulanIni - hppBulanIni;
+  const marginKotorBulanIni = omsetBulanIni > 0 ? (labaKotorBulanIni / omsetBulanIni) * 100 : 0;
   const expensesThisMonth = useMemo(
     () => expenses.filter((e) => isSameMonth(e.tanggal, now)),
     [expenses, now]
@@ -126,7 +169,12 @@ export default function LaporanPage() {
     () => expensesThisMonth.reduce((sum, e) => sum + e.nominal, 0),
     [expensesThisMonth]
   );
-  const labaBulanIni = omsetBulanIni - totalExpensesBulanIni;
+  const labaBersihBulanIni = labaKotorBulanIni - totalExpensesBulanIni;
+  const marginBersihBulanIni = omsetBulanIni > 0 ? (labaBersihBulanIni / omsetBulanIni) * 100 : 0;
+  const produkBelumDiisiBulanIni = useMemo(
+    () => produkModalBelumDiisi(paidOrdersThisMonth),
+    [paidOrdersThisMonth, missingModalIds]
+  );
 
   const monthOptions = useMemo(() => {
     const opts: Date[] = [];
@@ -147,6 +195,9 @@ export default function LaporanPage() {
     () => ordersSelectedMonth.reduce((sum, o) => sum + o.total, 0),
     [ordersSelectedMonth]
   );
+  const hppSelectedMonth = useMemo(() => hitungHPP(ordersSelectedMonth), [ordersSelectedMonth, modalMap]);
+  const labaKotorSelectedMonth = omsetSelectedMonth - hppSelectedMonth;
+  const marginKotorSelectedMonth = omsetSelectedMonth > 0 ? (labaKotorSelectedMonth / omsetSelectedMonth) * 100 : 0;
   const expensesSelectedMonth = useMemo(
     () => expenses.filter((e) => isSameMonth(e.tanggal, selectedMonth)),
     [expenses, selectedMonth]
@@ -155,7 +206,8 @@ export default function LaporanPage() {
     () => expensesSelectedMonth.reduce((sum, e) => sum + e.nominal, 0),
     [expensesSelectedMonth]
   );
-  const labaSelectedMonth = omsetSelectedMonth - totalExpensesSelectedMonth;
+  const labaBersihSelectedMonth = labaKotorSelectedMonth - totalExpensesSelectedMonth;
+  const marginBersihSelectedMonth = omsetSelectedMonth > 0 ? (labaBersihSelectedMonth / omsetSelectedMonth) * 100 : 0;
   const menuTerlarisSelectedMonth = useMemo(() => {
     const counter: Record<string, number> = {};
     ordersSelectedMonth.forEach((o) => {
@@ -167,6 +219,10 @@ export default function LaporanPage() {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5);
   }, [ordersSelectedMonth]);
+  const produkBelumDiisiSelectedMonth = useMemo(
+    () => produkModalBelumDiisi(ordersSelectedMonth),
+    [ordersSelectedMonth, missingModalIds]
+  );
 
   const prevMonthDate = useMemo(
     () => new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() - 1, 1),
@@ -186,7 +242,6 @@ export default function LaporanPage() {
     hasPrevMonthData && omsetPrevMonth > 0
       ? Math.round(((omsetSelectedMonth - omsetPrevMonth) / omsetPrevMonth) * 100)
       : null;
-
   async function handleAddExpense() {
     const nominalNum = Number(expNominal);
     if (!expKategori.trim() || !nominalNum || nominalNum <= 0) {
@@ -239,7 +294,8 @@ export default function LaporanPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 text-[var(--walnut)]">
-      <h1 className="font-display text-3xl font-bold text-[var(--forest-dark)] tracking-tight">Laporan</h1>
+      <h1 className="font-display text-2xl font-bold text-[var(--forest)]">Laporan</h1>
+
       <div className="flex gap-1 rounded-xl bg-[var(--cream-alt)] p-1 w-fit">
         <button
           onClick={() => setActiveTab("harian")}
@@ -296,6 +352,38 @@ export default function LaporanPage() {
             </div>
           </section>
 
+          {produkBelumDiisiBulanIni.length > 0 && (
+            <div className="rounded-xl border border-[var(--amber)] bg-[var(--amber-tint)] p-3 text-sm text-[var(--walnut)]">
+              ⚠️ Harga modal belum diisi untuk: <b>{produkBelumDiisiBulanIni.join(", ")}</b>. Laba
+              kotor & bersih bulan ini masih di bawah angka sebenarnya sampai modal produk ini diisi
+              di halaman Kelola Menu.
+            </div>
+          )}
+
+          <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-2">
+            <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Ringkasan Laba — Bulan Ini</h2>
+            <div className="flex justify-between text-sm">
+              <span>Omset</span>
+              <span className="font-mono">{formatRupiah(omsetBulanIni)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span>HPP (modal barang terjual)</span>
+              <span className="font-mono">-{formatRupiah(hppBulanIni)}</span>
+            </div>
+            <div className="flex justify-between text-sm font-semibold pt-1 border-t border-[var(--line)]">
+              <span>Laba Kotor <span className="font-normal text-[var(--walnut-soft)]">({formatPercent(marginKotorBulanIni)})</span></span>
+              <span className="font-mono">{formatRupiah(labaKotorBulanIni)}</span>
+            </div>
+            <div className="flex justify-between text-sm pt-2">
+              <span>Biaya Operasional (termasuk gaji)</span>
+              <span className="font-mono">-{formatRupiah(totalExpensesBulanIni)}</span>
+            </div>
+            <div className="flex justify-between font-bold text-[var(--forest)] pt-2 border-t border-[var(--line)]">
+              <span>Laba Bersih <span className="font-normal text-[var(--walnut-soft)]">({formatPercent(marginBersihBulanIni)})</span></span>
+              <span className="font-mono">{formatRupiah(labaBersihBulanIni)}</span>
+            </div>
+          </section>
+
           <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-3">
             <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Menu Terlaris (Top 5)</h2>
             {menuTerlaris.length === 0 ? (
@@ -310,22 +398,6 @@ export default function LaporanPage() {
                 ))}
               </ol>
             )}
-          </section>
-
-          <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-2">
-            <h2 className="font-display text-lg font-semibold text-[var(--forest)]">Laba Bulan Ini</h2>
-            <div className="flex justify-between text-sm">
-              <span>Omset bulan ini</span>
-              <span className="font-mono">{formatRupiah(omsetBulanIni)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span>Pengeluaran bulan ini (termasuk gaji)</span>
-              <span className="font-mono">{formatRupiah(totalExpensesBulanIni)}</span>
-            </div>
-            <div className="flex justify-between font-bold text-[var(--forest)] pt-2 border-t border-[var(--line)]">
-              <span>Laba bersih</span>
-              <span className="font-mono">{formatRupiah(labaBulanIni)}</span>
-            </div>
           </section>
 
           <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-4">
@@ -346,21 +418,21 @@ export default function LaporanPage() {
                   placeholder="Kategori (mis: Belanja Bahan)"
                   value={expKategori}
                   onChange={(e) => setExpKategori(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
                 />
                 <input
                   type="number"
                   placeholder="Nominal"
                   value={expNominal}
                   onChange={(e) => setExpNominal(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Keterangan (opsional)"
                   value={expKeterangan}
                   onChange={(e) => setExpKeterangan(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm"
                 />
                 <button
                   onClick={handleAddExpense}
@@ -371,6 +443,7 @@ export default function LaporanPage() {
                 </button>
               </div>
             )}
+
             <div>
               <p className="text-sm font-medium mb-2">Pemasukan ({paidOrdersThisMonth.length} transaksi)</p>
               {paidOrdersThisMonth.length === 0 ? (
@@ -414,7 +487,7 @@ export default function LaporanPage() {
             <select
               value={selectedMonth.toISOString()}
               onChange={(e) => setSelectedMonth(new Date(e.target.value))}
-              className="w-full rounded-lg border border-[var(--line)] bg-[var(--white)] px-3 py-2 text-sm font-medium"
+              className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-sm font-medium"
             >
               {monthOptions.map((m) => (
                 <option key={m.toISOString()} value={m.toISOString()}>
@@ -423,27 +496,42 @@ export default function LaporanPage() {
               ))}
             </select>
           </section>
+          {produkBelumDiisiSelectedMonth.length > 0 && (
+            <div className="rounded-xl border border-[var(--amber)] bg-[var(--amber-tint)] p-3 text-sm text-[var(--walnut)]">
+              ⚠️ Harga modal belum diisi untuk: <b>{produkBelumDiisiSelectedMonth.join(", ")}</b>. Laba
+              kotor & bersih bulan ini masih di bawah angka sebenarnya.
+            </div>
+          )}
 
-          <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4">
-              <p className="text-xs text-[var(--walnut-soft)] mb-1">Omset {monthLabel(selectedMonth)}</p>
-              <p className="text-xl font-bold font-mono text-[var(--forest)]">{formatRupiah(omsetSelectedMonth)}</p>
-              {omsetPerubahanPersen !== null ? (
-                <p className={`text-xs font-semibold mt-1 ${omsetPerubahanPersen >= 0 ? "text-[var(--green-ok)]" : "text-[var(--red)]"}`}>
-                  {omsetPerubahanPersen >= 0 ? "▲" : "▼"} {Math.abs(omsetPerubahanPersen)}% dari {monthLabel(prevMonthDate)}
-                </p>
-              ) : (
-                <p className="text-xs text-[var(--walnut-soft)] mt-1">Belum ada data bulan sebelumnya untuk dibandingkan.</p>
-              )}
+          <section className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4 md:p-6 space-y-2">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="font-display text-lg font-semibold text-[var(--forest)]">{monthLabel(selectedMonth)}</h2>
+              <span className="text-xs text-[var(--walnut-soft)]">{ordersSelectedMonth.length} transaksi</span>
             </div>
-            <div className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4">
-              <p className="text-xs text-[var(--walnut-soft)] mb-1">Laba {monthLabel(selectedMonth)}</p>
-              <p className="text-xl font-bold font-mono text-[var(--forest)]">{formatRupiah(labaSelectedMonth)}</p>
-              <p className="text-xs text-[var(--walnut-soft)] mt-1">Pengeluaran: {formatRupiah(totalExpensesSelectedMonth)}</p>
+            <div className="flex justify-between text-sm">
+              <span>Omset</span>
+              <span className="font-mono">{formatRupiah(omsetSelectedMonth)}</span>
             </div>
-            <div className="rounded-xl border border-[var(--line)] bg-[var(--white)] p-4">
-              <p className="text-xs text-[var(--walnut-soft)] mb-1">Jumlah Transaksi</p>
-              <p className="text-xl font-bold font-mono text-[var(--forest)]">{ordersSelectedMonth.length}</p>
+            {omsetPerubahanPersen !== null && (
+              <p className={`text-xs font-semibold -mt-1 ${omsetPerubahanPersen >= 0 ? "text-[var(--green-ok)]" : "text-[var(--red)]"}`}>
+                {omsetPerubahanPersen >= 0 ? "▲" : "▼"} {Math.abs(omsetPerubahanPersen)}% dari {monthLabel(prevMonthDate)}
+              </p>
+            )}
+            <div className="flex justify-between text-sm">
+              <span>HPP (modal barang terjual)</span>
+              <span className="font-mono">-{formatRupiah(hppSelectedMonth)}</span>
+            </div>
+            <div className="flex justify-between text-sm font-semibold pt-1 border-t border-[var(--line)]">
+              <span>Laba Kotor <span className="font-normal text-[var(--walnut-soft)]">({formatPercent(marginKotorSelectedMonth)})</span></span>
+              <span className="font-mono">{formatRupiah(labaKotorSelectedMonth)}</span>
+            </div>
+            <div className="flex justify-between text-sm pt-2">
+              <span>Biaya Operasional (termasuk gaji)</span>
+              <span className="font-mono">-{formatRupiah(totalExpensesSelectedMonth)}</span>
+            </div>
+            <div className="flex justify-between font-bold text-[var(--forest)] pt-2 border-t border-[var(--line)]">
+              <span>Laba Bersih <span className="font-normal text-[var(--walnut-soft)]">({formatPercent(marginBersihSelectedMonth)})</span></span>
+              <span className="font-mono">{formatRupiah(labaBersihSelectedMonth)}</span>
             </div>
           </section>
 

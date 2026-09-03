@@ -3,6 +3,7 @@ export type MenuItem = {
   nama: string;
   kategori: string | null;
   harga: number;
+  harga_modal: number | null;
   deskripsi: string | null;
   status: "tersedia" | "habis";
   rekomendasi: boolean;
